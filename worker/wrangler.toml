@@ -8,7 +8,7 @@ binding = "AI"
 
 [vars]
 # Deine GitHub-Pages-Adresse eintragen (ohne Slash am Ende). localhost ist immer erlaubt.
-ALLOWED_ORIGINS = "https://DEIN-GITHUB-NAME.github.io"
+ALLOWED_ORIGINS = "https://elias-geee.github.io"
 
 # Den API-Key NICHT hier eintragen, sondern als Secret:
 #   npx wrangler secret put ANTHROPIC_API_KEY
