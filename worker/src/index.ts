@@ -105,7 +105,7 @@ function cosine(a: number[], b: number[]) {
   return dot / Math.sqrt(na * nb)
 }
 // Kalibrierung: Cosinus-Ähnlichkeit ab COLD → 0°, ab HOT → 99°. Bei Bedarf anpassen.
-const COLD = 0.4
+const COLD = 0.35
 const HOT = 0.85
 
 function contextoPuzzle(body: Record<string, unknown>) {
