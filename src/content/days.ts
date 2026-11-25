@@ -183,9 +183,20 @@ export const DAYS: Day[] = [
   },
   {
     day: 17,
-    title: 'Hörspiel',
-    emoji: '🎧',
-    content: { type: 'audio', src: 'audio/day17.mp3' },
+    title: 'Geo-Guessr 2',
+    emoji: '📍',
+    intro: 'Round 2: Wo waren wir hier? Pin setzen und hoffen 🤞',
+    content: {
+      type: 'geo',
+      center: [46.8, 8.2],
+      zoom: 7,
+      scaleKm: 50,
+      rounds: [
+        { img: 'img/placeholder-1.svg', lat: 46.5197, lng: 6.6323, caption: 'Platzhalter: Lausanne' },
+        { img: 'img/placeholder-2.svg', lat: 46.0037, lng: 8.9511, caption: 'Platzhalter: Lugano' },
+        { img: 'img/placeholder-3.svg', lat: 47.0502, lng: 8.3093, caption: 'Platzhalter: Luzern' },
+      ],
+    },
   },
   {
     day: 18,
