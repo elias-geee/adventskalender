@@ -1,0 +1,297 @@
+:root {
+  --red: #d7263d;
+  --red-dark: #a3142a;
+  --green: #1b998b;
+  --green-dark: #0f6b60;
+  --gold: #ffd23f;
+  --pink: #ff6fb5;
+  --sky: #9be3ff;
+  --cream: #fff8e7;
+  --ink: #141414;
+  --white: #ffffff;
+  --gray: #d9d4c7;
+  --outline: 3px solid var(--ink);
+  --shadow: 5px 5px 0 var(--ink);
+  --shadow-sm: 3px 3px 0 var(--ink);
+  --radius: 14px;
+  --font-title: 'Bangers', 'Impact', system-ui, sans-serif;
+  --font-body: 'Fredoka', 'Comic Sans MS', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--red);
+  /* Halftone-Punkte */
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.18) 1.6px, transparent 1.8px),
+    radial-gradient(rgba(0, 0, 0, 0.08) 1.6px, transparent 1.8px);
+  background-size: 18px 18px, 18px 18px;
+  background-position: 0 0, 9px 9px;
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea { font-family: inherit; color: inherit; }
+
+#root { min-height: 100dvh; display: flex; flex-direction: column; }
+
+.container { width: 100%; max-width: 760px; margin: 0 auto; padding: 16px 14px 60px; }
+
+/* ---------- Schnee ---------- */
+.snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.snow span {
+  position: absolute; top: -10px; color: #fff; opacity: 0.85; user-select: none;
+  animation: fall linear infinite;
+  text-shadow: 0 0 2px rgba(0,0,0,.15);
+}
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+.app-content { position: relative; z-index: 1; }
+
+/* ---------- Header ---------- */
+.hero { text-align: center; padding: 18px 8px 6px; }
+.hero h1 {
+  font-family: var(--font-title);
+  font-size: clamp(42px, 11vw, 84px);
+  letter-spacing: 2px;
+  margin: 0;
+  color: var(--gold);
+  -webkit-text-stroke: 2.5px var(--ink);
+  text-shadow: 5px 5px 0 var(--ink);
+  transform: rotate(-2deg);
+  line-height: 1;
+}
+.hero .sub {
+  display: inline-block; margin-top: 14px; padding: 6px 14px;
+  background: var(--white); border: var(--outline); border-radius: 999px; box-shadow: var(--shadow-sm);
+  font-weight: 600; transform: rotate(1deg);
+}
+
+/* ---------- Panels / Bubbles ---------- */
+.panel {
+  background: var(--cream);
+  border: var(--outline);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin: 18px 0;
+}
+.panel.white { background: var(--white); }
+.bubble {
+  position: relative; background: var(--white); border: var(--outline); border-radius: 18px;
+  padding: 12px 16px; box-shadow: var(--shadow-sm); font-weight: 500; margin: 10px 0 18px;
+}
+.bubble::after {
+  content: ''; position: absolute; left: 28px; bottom: -14px; width: 18px; height: 18px;
+  background: var(--white); border-right: var(--outline); border-bottom: var(--outline);
+  transform: rotate(45deg) skew(10deg, 10deg);
+}
+.title-burst {
+  font-family: var(--font-title); font-size: clamp(30px, 8vw, 48px); letter-spacing: 1.5px;
+  margin: 6px 0 4px; color: var(--white); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--ink);
+}
+.tag {
+  display: inline-block; font-family: var(--font-title); letter-spacing: 1px; font-size: 18px;
+  background: var(--gold); border: var(--outline); padding: 2px 10px; border-radius: 8px;
+  box-shadow: var(--shadow-sm); transform: rotate(-3deg);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-title); letter-spacing: 1px; font-size: 20px;
+  background: var(--gold); border: var(--outline); border-radius: 12px; box-shadow: var(--shadow-sm);
+  padding: 8px 18px; cursor: pointer; transition: transform .08s, box-shadow .08s;
+  display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+  text-decoration: none; color: var(--ink);
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.btn.green { background: var(--green); color: var(--white); }
+.btn.red { background: var(--red); color: var(--white); }
+.btn.pink { background: var(--pink); }
+.btn.white { background: var(--white); }
+.btn.small { font-size: 16px; padding: 4px 12px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.center { text-align: center; }
+.muted { opacity: .7; font-size: 14px; }
+
+input.text, textarea.text {
+  width: 100%; font-size: 18px; padding: 10px 12px; border: var(--outline); border-radius: 10px;
+  background: var(--white); box-shadow: inset 2px 2px 0 rgba(0,0,0,.08); outline: none;
+}
+input.text:focus, textarea.text:focus { box-shadow: 0 0 0 3px var(--gold); }
+
+/* ---------- Türchen-Grid ---------- */
+.grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 22px;
+}
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+.door {
+  position: relative; aspect-ratio: 1 / 1.1; border: var(--outline); border-radius: 12px;
+  box-shadow: var(--shadow); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-title); font-size: clamp(30px, 8vw, 44px); color: var(--white);
+  -webkit-text-stroke: 1.5px var(--ink); text-shadow: 3px 3px 0 var(--ink);
+  transition: transform .15s; user-select: none; overflow: hidden; background: var(--green);
+}
+.door:nth-child(odd) { transform: rotate(-1.5deg); }
+.door:nth-child(3n) { transform: rotate(1.5deg); }
+.door:hover { transform: scale(1.06) rotate(0deg); z-index: 2; }
+.door .ribbon-v, .door .ribbon-h { position: absolute; background: var(--gold); opacity: .9; }
+.door .ribbon-v { width: 14%; top: 0; bottom: 0; left: 43%; border-left: 2px solid var(--ink); border-right: 2px solid var(--ink); }
+.door .ribbon-h { height: 14%; left: 0; right: 0; top: 43%; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.door .num { position: relative; z-index: 1; }
+.door.locked { filter: saturate(.55) brightness(.92); cursor: not-allowed; }
+.door.locked .lock { position: absolute; bottom: 4px; right: 6px; font-size: 16px; -webkit-text-stroke: 0; text-shadow: none; z-index: 1; }
+.door.today { animation: pulse 1.4s ease-in-out infinite; }
+.door.opened { background: var(--cream) !important; color: var(--ink); -webkit-text-stroke: 0; text-shadow: none; flex-direction: column; }
+.door.opened .emoji { font-size: clamp(26px, 7vw, 38px); }
+.door.opened .small-num { font-size: 16px; font-family: var(--font-title); }
+.door .check { position: absolute; top: 3px; right: 6px; font-size: 16px; }
+.door.shake { animation: shake .4s; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px) rotate(-3deg); }
+  40% { transform: translateX(6px) rotate(3deg); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); }
+}
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08) rotate(2deg); } }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 100;
+  background: var(--white); border: var(--outline); border-radius: 14px; box-shadow: var(--shadow);
+  padding: 10px 18px; font-weight: 600; animation: pop .25s ease-out; max-width: 90vw; text-align: center;
+}
+@keyframes pop { from { transform: translateX(-50%) scale(.6); opacity: 0; } to { transform: translateX(-50%) scale(1); opacity: 1; } }
+
+/* ---------- Day-Page ---------- */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.reward {
+  background: var(--pink); border: var(--outline); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 16px; margin: 20px 0; font-size: 18px; font-weight: 600; text-align: center; animation: wobble 0.6s ease-out;
+}
+@keyframes wobble { 0% { transform: scale(.7) rotate(-6deg); } 60% { transform: scale(1.05) rotate(2deg); } 100% { transform: scale(1) rotate(0); } }
+.score-pill {
+  display: inline-block; background: var(--gold); border: var(--outline); border-radius: 999px; padding: 2px 12px;
+  font-weight: 700; box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Wordle ---------- */
+.wordle-board { display: grid; gap: 6px; justify-content: center; margin: 8px 0 16px; }
+.wordle-row { display: grid; gap: 6px; }
+.wordle-row.shake { animation: shake .4s; }
+.tile {
+  width: min(13vw, 54px); height: min(13vw, 54px); border: var(--outline); border-radius: 8px; background: var(--white);
+  display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: min(8vw, 32px);
+  text-transform: uppercase; box-shadow: var(--shadow-sm);
+}
+.tile.filled { animation: tilepop .1s; }
+.tile.correct { background: var(--green); color: var(--white); }
+.tile.present { background: var(--gold); }
+.tile.absent { background: #9a9a9a; color: var(--white); }
+.tile.reveal { animation: flip .45s ease-in-out both; }
+@keyframes tilepop { 50% { transform: scale(1.12); } }
+@keyframes flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+.keyboard { display: flex; flex-direction: column; gap: 6px; align-items: center; user-select: none; }
+.kb-row { display: flex; gap: 4px; width: 100%; justify-content: center; }
+.key {
+  flex: 1; max-width: 44px; min-width: 0; height: 52px; border: 2.5px solid var(--ink); border-radius: 8px; background: var(--white);
+  font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); padding: 0;
+}
+.key.wide { max-width: 72px; flex: 1.6; font-size: 13px; }
+.key.correct { background: var(--green); color: var(--white); }
+.key.present { background: var(--gold); }
+.key.absent { background: #9a9a9a; color: var(--white); }
+.key:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ---------- Minesweeper ---------- */
+.ms-board { display: grid; gap: 3px; justify-content: center; margin: 10px auto; touch-action: manipulation; }
+.ms-cell {
+  width: min(9.2vw, 40px); height: min(9.2vw, 40px); border: 2.5px solid var(--ink); border-radius: 6px;
+  background: var(--green); display: flex; align-items: center; justify-content: center; font-weight: 700;
+  font-size: min(5vw, 20px); cursor: pointer; box-shadow: 2px 2px 0 var(--ink); padding: 0; user-select: none;
+}
+.ms-cell:nth-child(even) { background: #23ad9e; }
+.ms-cell.open { background: var(--cream) !important; box-shadow: none; transform: translate(1px, 1px); cursor: default; }
+.ms-cell.boom { background: var(--red) !important; }
+.ms-cell.n1 { color: #1a5fd1; } .ms-cell.n2 { color: #1b8a2f; } .ms-cell.n3 { color: var(--red); }
+.ms-cell.n4 { color: #5b2a9e; } .ms-cell.n5 { color: #8a3b12; } .ms-cell.n6 { color: #0f6b60; }
+
+/* ---------- Kreuzworträtsel ---------- */
+.cw-grid { display: grid; gap: 0; justify-content: center; margin: 10px auto; }
+.cw-cell { width: min(11vw, 46px); height: min(11vw, 46px); position: relative; }
+.cw-cell.block { background: transparent; }
+.cw-cell input {
+  width: 100%; height: 100%; border: 2.5px solid var(--ink); margin: -1.25px; text-align: center; font-family: var(--font-title);
+  font-size: min(6.5vw, 26px); text-transform: uppercase; background: var(--white); outline: none; padding: 0; border-radius: 0; caret-color: transparent;
+}
+.cw-cell input.inword { background: #fff3b8; }
+.cw-cell input.active { background: var(--gold); }
+.cw-cell input.right { background: #b9efe7; }
+.cw-cell input.wrong { background: #ffc2c9; }
+.cw-cell .cw-num { position: absolute; top: 1px; left: 3px; font-size: 10px; font-weight: 700; z-index: 1; pointer-events: none; }
+.cw-clue-active { background: var(--gold); border: var(--outline); border-radius: 10px; padding: 8px 12px; font-weight: 600; margin: 8px 0; min-height: 44px; }
+.cw-clues { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 560px) { .cw-clues { grid-template-columns: 1fr 1fr; } }
+.cw-clues h4 { font-family: var(--font-title); letter-spacing: 1px; font-size: 20px; margin: 4px 0; }
+.cw-clues li { cursor: pointer; margin-bottom: 4px; }
+.cw-clues li.done { text-decoration: line-through; opacity: .6; }
+
+/* ---------- Audio ---------- */
+.player { text-align: center; }
+.player .cover {
+  width: min(70vw, 260px); aspect-ratio: 1; margin: 0 auto 16px; border: var(--outline); border-radius: 18px;
+  box-shadow: var(--shadow); background: var(--green); display: flex; align-items: center; justify-content: center;
+  font-size: 90px; overflow: hidden;
+}
+.player .cover img { width: 100%; height: 100%; object-fit: cover; }
+.player .cover.playing { animation: bob 1.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px) rotate(-2deg); } }
+.play-btn {
+  width: 84px; height: 84px; border-radius: 50%; border: var(--outline); background: var(--red); color: var(--white);
+  font-size: 34px; box-shadow: var(--shadow); cursor: pointer;
+}
+.play-btn:active { transform: translate(3px, 3px); box-shadow: none; }
+.bars { display: flex; gap: 4px; justify-content: center; align-items: flex-end; height: 34px; margin: 14px 0; }
+.bars i { width: 6px; background: var(--ink); border-radius: 3px; height: 6px; transition: height .2s; }
+.bars.on i { animation: eq 0.9s ease-in-out infinite; }
+@keyframes eq { 0%,100% { height: 6px; } 50% { height: 32px; } }
+input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
+
+/* ---------- Chat (20 Fragen / KI) ---------- */
+.chat { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; max-height: 55vh; overflow-y: auto; padding: 4px; }
+.msg { max-width: 85%; border: var(--outline); border-radius: 16px; padding: 8px 12px; box-shadow: var(--shadow-sm); }
+.msg.me { align-self: flex-end; background: var(--sky); border-bottom-right-radius: 4px; }
+.msg.bot { align-self: flex-start; background: var(--white); border-bottom-left-radius: 4px; }
+.msg .ans { font-family: var(--font-title); letter-spacing: 1px; font-size: 20px; margin-right: 6px; }
+.typing::after { content: '…'; animation: dots 1s steps(3) infinite; }
+
+/* ---------- Contexto ---------- */
+.ctx-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.ctx-item {
+  position: relative; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--white);
+  display: flex; justify-content: space-between; padding: 6px 12px; font-weight: 600;
+}
+.ctx-item .fill { position: absolute; inset: 0; z-index: 0; opacity: .85; }
+.ctx-item span { position: relative; z-index: 1; }
+.ctx-item.latest { box-shadow: 0 0 0 3px var(--gold); }
+
+/* ---------- Guess-Games ---------- */
+.photo {
+  width: 100%; max-height: 52vh; object-fit: contain; border: var(--outline); border-radius: var(--radius);
+  box-shadow: var(--shadow); background: var(--ink);
+}
+.map { height: 46vh; min-height: 280px; border: var(--outline); border-radius: var(--radius); box-shadow: var(--shadow); margin: 14px 0; z-index: 0; }
+.big-date { font-family: var(--font-title); font-size: 40px; letter-spacing: 1px; text-align: center; }
+
+/* ---------- Abschluss ---------- */
+.finale { text-align: center; }
+.finale .total { font-family: var(--font-title); font-size: 64px; color: var(--gold); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--ink); }
+
+.spin { display: inline-block; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.footer { text-align: center; color: var(--white); font-weight: 600; text-shadow: 1px 1px 0 var(--ink); margin-top: 30px; }

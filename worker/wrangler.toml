@@ -1,0 +1,15 @@
+name = "advent-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[vars]
+# Deine GitHub-Pages-Adresse eintragen (ohne Slash am Ende). localhost ist immer erlaubt.
+ALLOWED_ORIGINS = "https://DEIN-GITHUB-NAME.github.io"
+
+# Den API-Key NICHT hier eintragen, sondern als Secret:
+#   npx wrangler secret put ANTHROPIC_API_KEY
+# Für lokales Testen: Datei worker/.dev.vars mit ANTHROPIC_API_KEY=... anlegen (ist in .gitignore).
