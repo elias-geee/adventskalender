@@ -10,7 +10,8 @@ export const HER_NAME = 'Schatz'
 export const MY_NAME = 'dein Elias'
 
 /**
- * URL deines Cloudflare Workers (für die KI-Spiele), z. B. "https://advent-api.deinname.workers.dev".
- * Kann auch über die Umgebungsvariable VITE_API_URL gesetzt werden (.env.local).
+ * URL deines Cloudflare Workers (für die KI-Spiele). Gilt lokal (localhost) und online.
+ * Kann über die Umgebungsvariable VITE_API_URL überschrieben werden (z. B. in .env.local
+ * mit http://localhost:8787, um einen lokal laufenden Worker zu testen).
  */
-export const API_URL: string = import.meta.env.VITE_API_URL ?? ''
+export const API_URL: string = import.meta.env.VITE_API_URL || 'https://advent-api.advent-api.workers.dev'

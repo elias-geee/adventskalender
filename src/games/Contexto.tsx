@@ -129,7 +129,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
             <button className="btn" onClick={guess} disabled={loading || !input.trim()}>Raten</button>
           </div>
           <div className="row" style={{ justifyContent: 'space-between', marginTop: 10 }}>
-            <span className="muted">{state.guesses.length} Versuche</span>
+            <span className="muted">{state.guesses.length} {state.guesses.length === 1 ? 'Versuch' : 'Versuche'}</span>
             <div className="row">
               {state.guesses.length >= 5 && <button className="btn white small" onClick={hint} disabled={loading}>Tipp 💡</button>}
               {state.guesses.length >= 10 && <button className="btn white small" onClick={giveUp} disabled={loading}>Aufgeben 🏳️</button>}
