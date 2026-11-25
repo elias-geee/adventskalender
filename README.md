@@ -46,7 +46,7 @@ npx wrangler deploy
 
 Die ausgegebene URL (`https://advent-api.<name>.workers.dev`) im GitHub-Repo als Variable `API_URL` eintragen (Settings → Secrets and variables → Actions → **Variables**). Lokal geht das über eine Datei `.env.local` mit `VITE_API_URL=https://...`.
 
-Contexto nutzt Cloudflare Workers AI (`bge-m3`-Embeddings, Gratis-Kontingent). Die anderen KI-Spiele nutzen Claude Haiku 5.5 und kosten pro Antwort nur Bruchteile eines Rappens. Falls die Contexto-Temperaturen zu heiss oder zu kalt wirken, passe `COLD`/`HOT` in `worker/src/index.ts` an.
+Alle KI-Spiele nutzen Claude Haiku 5.5 und kosten pro Antwort nur Bruchteile eines Rappens. Bei Contexto bewertet Claude, wie nah ein Wort inhaltlich am Lösungswort liegt (Skala im Prompt von `contextScore` in `worker/src/index.ts`). Jede Bewertung wird im KV-Namespace `CONTEXTO_CACHE` gespeichert, damit dasselbe Wort immer dieselbe Temperatur bekommt. Wenn du die Skala im Prompt änderst, erhöhe das Präfix `v1:` im Cache-Key, sonst bleiben die alten Werte gültig.
 
 ## Auf GitHub Pages veröffentlichen
 

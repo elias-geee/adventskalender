@@ -26,7 +26,7 @@ export type TwentyPuzzle = {
 }
 
 export const CONTEXTO: Record<string, ContextoPuzzle> = {
-  c1: { word: 'Schneemann' },
+  c1: { word: 'Podcast', accept: ['Podcasts'] },
   c2: { word: 'Zimtstern', accept: ['Zimtsterne'] },
 }
 

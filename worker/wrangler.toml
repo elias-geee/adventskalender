@@ -3,8 +3,10 @@ main = "src/index.ts"
 compatibility_date = "2026-11-01"
 compatibility_flags = ["nodejs_compat"]
 
-[ai]
-binding = "AI"
+# Cache für Contexto-Bewertungen (gleiches Wort → immer gleiche Temperatur)
+[[kv_namespaces]]
+binding = "CONTEXTO_CACHE"
+id = "46e8ddec645149bda82482f28fc2de17"
 
 [vars]
 # Deine GitHub-Pages-Adresse eintragen (ohne Slash am Ende). localhost ist immer erlaubt.
