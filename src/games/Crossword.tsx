@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import type { CrosswordContent, CrosswordEntry } from '../content/types'
 import type { GameProps } from '../components/DayPage'
@@ -40,6 +40,19 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
   const [active, setActive] = useState<{ r: number; c: number; dir: Dir } | null>(null)
   const [showCheck, setShowCheck] = useState(false)
   const inputs = useRef<Record<string, HTMLInputElement | null>>({})
+  const scroller = useRef<HTMLDivElement>(null)
+
+  // Grosse Gitter starten in der Mitte (dort, wo die meisten Wörter sind)
+  useEffect(() => {
+    const el = scroller.current
+    if (!el) return
+    const pos = Object.keys(solution).map((k) => k.split(',').map(Number))
+    const avg = (i: number) => pos.reduce((s, p) => s + p[i], 0) / pos.length
+    const cell = (el.scrollWidth - 24) / cols
+    el.scrollLeft = 12 + (avg(1) + 0.5) * cell - el.clientWidth / 2
+    el.scrollTop = 12 + (avg(0) + 0.5) * cell - el.clientHeight / 2
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const activeEntry = useMemo(() => {
     if (!active) return null
@@ -54,7 +67,9 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
     inputs.current[key(r, c)]?.focus()
   }
 
-  const isComplete = (letters: Record<string, string>) => Object.entries(solution).every(([k, v]) => letters[k] === v)
+  // Leerzeichen in Antworten (z. B. "VIVA LAS GAYGAS") werden als dunkle Trennfelder angezeigt
+  const isGap = (k: string) => solution[k] === ' '
+  const isComplete = (letters: Record<string, string>) => Object.entries(solution).every(([k, v]) => v === ' ' || letters[k] === v)
 
   const setLetter = (r: number, c: number, ch: string) => {
     const latest = (getProgress(day).state as State | undefined) ?? state
@@ -64,8 +79,11 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
   }
 
   const step = (r: number, c: number, dir: Dir, delta: number) => {
-    const nr = dir === 'down' ? r + delta : r
-    const nc = dir === 'across' ? c + delta : c
+    let nr = r, nc = c
+    do {
+      nr = dir === 'down' ? nr + delta : nr
+      nc = dir === 'across' ? nc + delta : nc
+    } while (isGap(key(nr, nc)))
     if (solution[key(nr, nc)]) focus(nr, nc, dir)
   }
 
@@ -108,18 +126,22 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
     else if (e.key === 'ArrowUp') step(r, c, 'down', -1)
   }
 
-  const entryDone = (e: CrosswordEntry) => cellsOf(e).every(([r, c], i) => state.letters[key(r, c)] === e.answer[i])
+  const entryDone = (e: CrosswordEntry) => cellsOf(e).every(([r, c], i) => e.answer[i] === ' ' || state.letters[key(r, c)] === e.answer[i])
+  const lengthLabel = (answer: string) => answer.split(' ').map((w) => w.length).join(', ')
+  const big = cols > 12
 
   return (
     <div>
       <div className="cw-clue-active">
         {activeEntry ? `${activeEntry.num} ${activeEntry.dir === 'across' ? '→' : '↓'} ${activeEntry.clue}` : 'Tipp auf ein Feld, um loszulegen ✏️'}
       </div>
-      <div className="cw-grid" style={{ gridTemplateColumns: `repeat(${cols}, auto)` }}>
+      <div ref={scroller} className={big ? 'cw-scroll' : undefined}>
+      <div className={`cw-grid ${big ? 'big' : ''}`} style={{ gridTemplateColumns: `repeat(${cols}, auto)` }}>
         {Array.from({ length: rows * cols }, (_, i) => {
           const r = Math.floor(i / cols), c = i % cols
           const k = key(r, c)
           if (!solution[k]) return <div key={k} className="cw-cell block" />
+          if (isGap(k)) return <div key={k} className="cw-cell gap" />
           const val = state.letters[k] ?? ''
           let cls = ''
           if (active && active.r === r && active.c === c) cls = 'active'
@@ -147,6 +169,8 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
           )
         })}
       </div>
+      </div>
+      {big && <p className="muted center" style={{ margin: '4px 0 0', fontSize: 13 }}>↔️ Das Rätsel ist gross: wisch übers Gitter oder tipp unten auf einen Hinweis.</p>}
 
       {!solved && (
         <div className="row" style={{ justifyContent: 'center', margin: '10px 0' }}>
@@ -163,7 +187,7 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
             <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {numbered.filter((e) => e.dir === dir).sort((a, b) => a.num - b.num).map((e) => (
                 <li key={e.num + dir} className={entryDone(e) ? 'done' : ''} onClick={() => focus(e.row, e.col, e.dir)}>
-                  <b>{e.num}.</b> {e.clue} <span className="muted">({e.answer.length})</span>
+                  <b>{e.num}.</b> {e.clue} <span className="muted">({lengthLabel(e.answer)})</span>
                 </li>
               ))}
             </ol>
