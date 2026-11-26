@@ -20,7 +20,7 @@ export const DAYS: Day[] = [
     emoji: '🔤',
     intro: 'Tag 1, let’s goooo 🎄 Heute auf Englisch 🇬🇧 Errate das englische Wort mit 5 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
     reward: 'Slay! Erstes Türchen geschafft 💅 Nur noch 23 Mal schlafen.',
-    content: { type: 'wordle', word: 'HONEY' },
+    content: { type: 'wordle', word: 'HONEY', lang: 'en' },
   },
   {
     day: 2,
@@ -177,7 +177,7 @@ export const DAYS: Day[] = [
     day: 12,
     title: 'Wordle 2.0',
     emoji: '🔠',
-    content: { type: 'wordle', word: 'GLÜHWEIN', maxTries: 7 },
+    content: { type: 'wordle', word: 'GLÜHWEIN', maxTries: 7, lang: 'de' },
   },
   {
     day: 13,

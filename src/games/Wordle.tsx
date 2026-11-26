@@ -3,6 +3,7 @@ import type { WordleContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { getProgress, useGameState } from '../lib/progress'
 import { useToast } from '../components/Toast'
+import { api, apiConfigured } from '../lib/api'
 
 type Mark = 'correct' | 'present' | 'absent'
 type State = { guesses: string[][]; gaveUp?: boolean }
@@ -29,6 +30,24 @@ function evaluate(guess: string[], target: string[]): Mark[] {
   return res
 }
 
+/** Bereits geprüfte Wörter (pro Sitzung), damit nichts doppelt gefragt wird */
+const checked = new Map<string, boolean>()
+
+/** Fragt den Worker, ob das ein echtes Wort ist. Bei Fehlern (offline, Server down) zählt das Wort – das Spiel soll nie hängen bleiben. */
+async function isRealWord(word: string, lang: 'de' | 'en'): Promise<boolean> {
+  const key = `${lang}:${word}`
+  const hit = checked.get(key)
+  if (hit !== undefined) return hit
+  if (!apiConfigured()) return true
+  try {
+    const r = await api<{ valid: boolean }>('/word', { word, lang })
+    checked.set(key, r.valid)
+    return r.valid
+  } catch {
+    return true
+  }
+}
+
 const WIN_LINES = ['GENIUS 🧠', 'Unglaublich 🔥', 'Stark 💪', 'Nice 😎', 'Puh, knapp 😅', 'Gerade noch 😮‍💨', 'Last second W 🫠']
 
 export default function Wordle({ day, content, solved, onSolved }: GameProps<WordleContent>) {
@@ -44,6 +63,9 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
     setCurState(next)
   }
   const [shake, setShake] = useState(false)
+  const [checking, setChecking] = useState(false)
+  const checkingRef = useRef(false)
+  const lang = content.lang ?? 'de'
   const [toast, showToast] = useToast()
 
   const won = state.guesses.some((g) => g.join('') === target.join(''))
@@ -64,7 +86,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
 
   const press = useCallback(
     (k: string) => {
-      if (over) return
+      if (over || checkingRef.current) return
       const cur = curRef.current
       if (k === '⌫' || k === 'BACKSPACE') return setCur(cur.slice(0, -1))
       if (k === 'ENTER') {
@@ -74,22 +96,36 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
           showToast('Zu kurz, bestie 🤏')
           return
         }
-        const prev = (getProgress(day).state as State | undefined)?.guesses ?? []
-        const guesses = [...prev, cur]
-        setState({ guesses })
-        setCur([])
-        if (cur.join('') === target.join('')) {
-          showToast(WIN_LINES[Math.min(guesses.length - 1, WIN_LINES.length - 1)])
-          if (!solved) onSolved((maxTries - guesses.length + 1) * 100)
-        } else if (guesses.length >= maxTries) {
-          showToast('Oof 💀', 2500)
+        const commit = () => {
+          const prev = (getProgress(day).state as State | undefined)?.guesses ?? []
+          const guesses = [...prev, cur]
+          setState({ guesses })
+          setCur([])
+          if (cur.join('') === target.join('')) {
+            showToast(WIN_LINES[Math.min(guesses.length - 1, WIN_LINES.length - 1)])
+            if (!solved) onSolved((maxTries - guesses.length + 1) * 100)
+          } else if (guesses.length >= maxTries) {
+            showToast('Oof 💀', 2500)
+          }
         }
+        const word = cur.join('')
+        if (word === target.join('') || content.checkWords === false) return commit()
+        checkingRef.current = true
+        setChecking(true)
+        isRealWord(word, lang).then((ok) => {
+          checkingRef.current = false
+          setChecking(false)
+          if (ok) return commit()
+          setShake(true)
+          setTimeout(() => setShake(false), 400)
+          showToast(lang === 'en' ? 'Kein englisches Wort 🤔' : 'Kein Wort, das ich kenne 🤔')
+        })
         return
       }
       if (/^[A-ZÄÖÜ]$/.test(k) && cur.length < len) setCur([...cur, k])
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [over, day, len, setState, target, solved, onSolved, maxTries, showToast],
+    [over, day, len, setState, target, solved, onSolved, maxTries, showToast, lang, content.checkWords],
   )
 
   useEffect(() => {
@@ -121,7 +157,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
         {rows.map((row, r) => (
           <div
             key={r}
-            className={`wordle-row ${shake && r === state.guesses.length ? 'shake' : ''}`}
+            className={`wordle-row ${shake && r === state.guesses.length ? 'shake' : ''} ${checking && r === state.guesses.length ? 'checking' : ''}`}
             style={{ gridTemplateColumns: `repeat(${len}, auto)` }}
           >
             {row.map((t, i) => (

@@ -183,6 +183,8 @@ input.text:focus, textarea.text:focus { box-shadow: 0 0 0 3px var(--gold); }
 .wordle-board { display: grid; gap: 6px; justify-content: center; margin: 8px 0 16px; }
 .wordle-row { display: grid; gap: 6px; }
 .wordle-row.shake { animation: shake .4s; }
+.wordle-row.checking .tile { animation: wd-checking .8s ease-in-out infinite alternate; }
+@keyframes wd-checking { from { opacity: 1; } to { opacity: .45; } }
 .tile {
   width: min(13vw, 54px); height: min(13vw, 54px); border: var(--outline); border-radius: 8px; background: var(--white);
   display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: min(8vw, 32px);

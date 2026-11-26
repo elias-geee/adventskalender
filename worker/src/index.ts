@@ -189,6 +189,38 @@ async function twenty(body: Record<string, unknown>, env: Env) {
   return { answer, comment: c.comment, solved, name: solved ? p.name : undefined }
 }
 
+/** Wordle: Ist die Eingabe ein echtes Wort? (Claude + Cache, damit gleiche Wörter sofort und immer gleich beantwortet werden) */
+const wordMemo = new Map<string, boolean>()
+async function word(body: Record<string, unknown>, env: Env) {
+  const w = str(body.word, 'word', 20).toUpperCase()
+  if (!/^[A-ZÄÖÜ]+$/.test(w)) throw new HttpError(400, 'Nur Buchstaben erlaubt')
+  const lang = body.lang === 'en' ? 'en' : 'de'
+  const key = `word:v2:${lang}:${w}`
+  const memo = wordMemo.get(key)
+  if (memo !== undefined) return { valid: memo }
+  const cached = await env.CONTEXTO_CACHE.get(key)
+  if (cached !== null) {
+    wordMemo.set(key, cached === '1')
+    return { valid: cached === '1' }
+  }
+  const language = lang === 'en' ? 'Englisch' : 'Deutsch (inkl. Schweizer Schreibweise mit ss statt ß)'
+  const r = await ask(
+    env,
+    `Du bist das Wörterbuch für ein Wordle-Spiel. Sprache: ${language}. Prüfe, ob die Buchstabenfolge (in Grossbuchstaben, ohne Leerzeichen) ein echtes, korrekt geschriebenes Wort dieser Sprache ist. ` +
+      'Gültig sind alle Wörter, die in einem normalen Wörterbuch stehen, inkl. gebeugter Formen (Plural, Verbformen, Steigerungen, Fälle) und gängiger Wörter aus dem Alltag. ' +
+      'Ungültig sind Fantasie-Buchstabenfolgen, Tippfehler, Abkürzungen, Eigennamen (Personen, Orte, Marken) und Wörter, die nur in einer ANDEREN Sprache existieren ' +
+      `(z. B. ein deutsches Wort in einem englischen Wordle oder umgekehrt). Lehnwörter, die wirklich im ${lang === 'en' ? 'englischen' : 'deutschen'} Wörterbuch stehen, sind gültig. ` +
+      'Schreib zuerst in reason ganz kurz, was das Wort bedeutet bzw. welche Grundform es hat und aus welcher Sprache es stammt – und entscheide erst dann.',
+    `<eingabe>${w}</eingabe>`,
+    z.object({ reason: z.string(), valid: z.boolean() }),
+    300,
+    false,
+  )
+  wordMemo.set(key, r.valid)
+  await env.CONTEXTO_CACHE.put(key, r.valid ? '1' : '0')
+  return { valid: r.valid }
+}
+
 async function sentence(body: Record<string, unknown>, env: Env) {
   const start = str(body.start, 'start', 300)
   const ending = str(body.ending, 'ending', 300)
@@ -236,6 +268,7 @@ export default {
         case '/twenty': return json(await twenty(body, env))
         case '/twenty/reveal': return json({ name: twentyPuzzle(body).name })
         case '/sentence': return json(await sentence(body, env))
+        case '/word': return json(await word(body, env))
         default: throw new HttpError(404, 'Not found')
       }
     } catch (e) {

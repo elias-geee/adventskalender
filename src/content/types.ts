@@ -14,6 +14,10 @@ export type WordleContent = {
   /** Lösungswort (beliebige Länge 4–7 empfohlen). Ä/Ö/Ü zählen als ein Buchstabe. */
   word: string
   maxTries?: number
+  /** Sprache des Worts: Eingaben werden geprüft, ob sie ein echtes Wort in dieser Sprache sind (Standard: 'de') */
+  lang?: 'de' | 'en'
+  /** false = beliebige Buchstabenfolgen erlauben (Standard: true) */
+  checkWords?: boolean
 }
 
 export type CrosswordEntry = {
