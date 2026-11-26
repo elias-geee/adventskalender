@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { HistoryContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
+import Photo from '../components/Photo'
 
 type Guess = { value: number; diff: number; points: number }
 type State = { round: number; guesses: Guess[] }
@@ -59,7 +60,7 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
         <span className="tag">Foto {state.round + 1}/{content.rounds.length}</span>
         <span className="score-pill">⭐ {total}</span>
       </div>
-      <img className="photo" src={round.img} alt="Wann war das?" />
+      <Photo src={round.img} alt="Wann war das?" />
       {round.caption && <p className="center" style={{ fontWeight: 600 }}>{round.caption}</p>}
 
       <div className="big-date" style={{ marginTop: 14 }}>{label(guessed ? guessed.value : value, precision)}</div>

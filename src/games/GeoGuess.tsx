@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css'
 import type { GeoContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
+import Photo from '../components/Photo'
 
 type Guess = { lat: number; lng: number; km: number; points: number }
 type State = { round: number; guesses: Guess[] }
@@ -89,7 +90,7 @@ export default function GeoGuess({ day, content, solved, onSolved }: GameProps<G
         <span className="tag">Foto {roundIdx + 1}/{content.rounds.length}</span>
         <span className="score-pill">⭐ {total}</span>
       </div>
-      <img className="photo" src={round.img} alt="Wo ist das?" />
+      <Photo src={round.img} alt="Wo ist das?" />
 
       <MapContainer key={roundIdx} className="map" center={center} zoom={zoom} scrollWheelZoom>
         <TileLayer

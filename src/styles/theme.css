@@ -292,6 +292,25 @@ input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
   width: 100%; max-height: 52vh; object-fit: contain; border: var(--outline); border-radius: var(--radius);
   box-shadow: var(--shadow); background: var(--ink);
 }
+.photo-wrap { position: relative; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.photo-wrap .photo { display: block; }
+.photo-zoom {
+  position: absolute; right: 10px; bottom: 10px; background: var(--white); border: 2px solid var(--ink); border-radius: 999px;
+  padding: 2px 10px; font-size: 13px; font-weight: 700; color: var(--ink); pointer-events: none;
+}
+.lightbox {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(10, 10, 20, .94); overflow: auto; cursor: zoom-out;
+  display: flex; align-items: center; -webkit-overflow-scrolling: touch;
+}
+.lightbox img { display: block; margin: auto; max-width: 100%; max-height: 100%; }
+/* Handy hochkant: Bild füllt die Höhe, seitlich wischen wie bei Street View */
+@media (orientation: portrait) and (max-width: 700px) {
+  .lightbox img { max-width: none; max-height: none; height: 100%; width: auto; }
+}
+.lightbox-close {
+  position: fixed; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: var(--white);
+  border: var(--outline); display: grid; place-items: center; font-weight: 700; color: var(--ink);
+}
 .map { height: 46vh; min-height: 280px; border: var(--outline); border-radius: var(--radius); box-shadow: var(--shadow); margin: 14px 0; z-index: 0; }
 .big-date { font-family: var(--font-title); font-size: 40px; letter-spacing: 1px; text-align: center; }
 
