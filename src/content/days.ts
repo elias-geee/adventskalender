@@ -117,10 +117,10 @@ export const DAYS: Day[] = [
   },
   {
     day: 6,
-    title: 'Hörspiel: Nikolaus',
+    title: 'Ausgeknipst',
     emoji: '🎧',
     intro: 'Kopfhörer rein, Licht aus, Tee an ☕',
-    content: { type: 'audio', src: 'audio/day06.mp3', description: 'Folge 1 – Platzhalter-Beschreibung' },
+    content: { type: 'audio', src: 'audio/day06.mp3', description: 'Hörspiel · Folge 1' },
   },
   {
     day: 7,
@@ -165,9 +165,10 @@ export const DAYS: Day[] = [
   },
   {
     day: 10,
-    title: 'Hörspiel',
+    title: 'Weihnachten wieder hier',
     emoji: '🎧',
-    content: { type: 'audio', src: 'audio/day10.mp3', description: 'Folge 2' },
+    intro: 'Folge 2 ist da – Decke holen, Kakao machen ☕',
+    content: { type: 'audio', src: 'audio/day10.mp3', description: 'Hörspiel · Folge 2' },
   },
   {
     day: 11,
@@ -184,9 +185,10 @@ export const DAYS: Day[] = [
   },
   {
     day: 13,
-    title: 'Hörspiel',
+    title: 'Morgen, Kinder, wird’s was geben',
     emoji: '🎧',
-    content: { type: 'audio', src: 'audio/day13.mp3' },
+    intro: 'Zeit für Folge 3 – Kopfhörer auf und los 🎄',
+    content: { type: 'audio', src: 'audio/day13.mp3', description: 'Hörspiel · Folge 3' },
   },
   {
     day: 14,
