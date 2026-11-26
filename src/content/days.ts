@@ -123,7 +123,7 @@ export const DAYS: Day[] = [
     day: 10,
     title: 'Hörspiel',
     emoji: '🎧',
-    content: { type: 'audio', src: 'audio/day10.mp3' },
+    content: { type: 'audio', src: 'audio/day10.mp3', description: 'Folge 2' },
   },
   {
     day: 11,
