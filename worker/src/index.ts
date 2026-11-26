@@ -160,20 +160,33 @@ async function twenty(body: Record<string, unknown>, env: Env) {
   const question = str(body.question, 'question', 150)
   const history = Array.isArray(body.history) ? (body.history as { q?: unknown; a?: unknown }[]).slice(-25) : []
   const transcript = history.map((h) => `F: ${String(h.q).slice(0, 150)}\nA: ${String(h.a).slice(0, 20)}`).join('\n')
+  // Schritt 1: Antwort bestimmen (kennt die Person + Fakten, schreibt aber keinen Text für die Spielerin)
   const r = await ask(
     env,
     `Ihr spielt «Wer bin ich?». Du denkst an: ${p.name}.` +
       (p.facts ? `\nFakten zu dieser Person (nutze sie als Wahrheit): ${p.facts}` : '') +
       '\nBeantworte die Ja/Nein-Frage der Spielerin wahrheitsgemäss mit answer = "Ja", "Nein", "Teilweise" (wenn es nur zum Teil stimmt) oder "Unklar" (wenn man es nicht sicher weiss oder die Frage keine Ja/Nein-Frage ist). ' +
-      'Verrate den Namen nie im Kommentar. Der Kommentar ist frech und kurz, darf leicht anfeuern, aber keine zusätzlichen Hinweise geben. ' +
       `solved = true nur, wenn die Spielerin die Person eindeutig richtig benennt (z. B. «Ist es ${p.name}?»; Tippfehler sind ok).`,
     `Bisheriger Verlauf:\n${transcript || '–'}\n\nNeue Frage: <eingabe>${question}</eingabe>`,
-    z.object({ answer: z.enum(['Ja', 'Nein', 'Teilweise', 'Unklar']), comment: z.string(), solved: z.boolean() }),
+    z.object({ answer: z.enum(['Ja', 'Nein', 'Teilweise', 'Unklar']), solved: z.boolean() }),
+    300,
+    false,
   )
   // Zusätzliche Absicherung: exakter Namens-Treffer zählt immer
   const nq = normalize(question)
   const solved = r.solved || [p.name, ...(p.accept ?? [])].some((n) => ` ${nq} `.includes(` ${normalize(n)} `))
-  return { answer: solved ? 'Ja' : r.answer, comment: r.comment, solved, name: solved ? p.name : undefined }
+  const answer = solved ? 'Ja' : r.answer
+  // Schritt 2: frecher Kommentar – kennt die Person NICHT und kann deshalb nichts verraten
+  const c = await ask(
+    env,
+    'Ihr spielt «Wer bin ich?». Die Spielerin hat eine Ja/Nein-Frage gestellt, die Antwort steht schon fest. Schreib dazu einen frechen, kurzen Kommentar (max. 1 Satz), der zur Antwort passt und anfeuert. ' +
+      'Erfinde keine Fakten über die gesuchte Person.' +
+      (solved ? ' Sie hat die Person gerade richtig erraten – feiere sie!' : ''),
+    `Frage: <eingabe>${question}</eingabe>\nAntwort: ${answer}`,
+    z.object({ comment: z.string() }),
+    300,
+  ).catch(() => ({ comment: '' }))
+  return { answer, comment: c.comment, solved, name: solved ? p.name : undefined }
 }
 
 async function sentence(body: Record<string, unknown>, env: Env) {
