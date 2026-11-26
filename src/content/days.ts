@@ -18,9 +18,9 @@ export const DAYS: Day[] = [
     day: 1,
     title: 'Warm-up Wordle',
     emoji: '🔤',
-    intro: 'Tag 1, let’s goooo 🎄 Errate das Wort in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
+    intro: 'Tag 1, let’s goooo 🎄 Heute auf Englisch 🇬🇧 Errate das englische Wort mit 5 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
     reward: 'Slay! Erstes Türchen geschafft 💅 Nur noch 23 Mal schlafen.',
-    content: { type: 'wordle', word: 'KEKSE' },
+    content: { type: 'wordle', word: 'HONEY' },
   },
   {
     day: 2,
