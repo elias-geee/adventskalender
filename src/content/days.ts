@@ -259,9 +259,10 @@ export const DAYS: Day[] = [
   },
   {
     day: 20,
-    title: 'Hörspiel',
+    title: 'Fräulein Petterssons Haus',
     emoji: '🎧',
-    content: { type: 'audio', src: 'audio/day20.mp3' },
+    intro: 'Folge 4 – nur noch vier Mal schlafen 🎄 Kopfhörer auf!',
+    content: { type: 'audio', src: 'audio/day20.mp3', description: 'Hörspiel · Folge 4' },
   },
   {
     day: 21,
@@ -318,10 +319,10 @@ export const DAYS: Day[] = [
   },
   {
     day: 24,
-    title: 'Das Finale ✨',
+    title: 'Nichts als Hirngespinste',
     emoji: '⭐',
-    intro: 'Frohe Weihnachten! 🎄❤️',
-    content: { type: 'audio', src: 'audio/day24.mp3', description: 'Das grosse Finale' },
+    intro: 'Frohe Weihnachten! 🎄❤️ Das grosse Finale.',
+    content: { type: 'audio', src: 'audio/day24.mp3', description: 'Hörspiel · Folge 5 – Das Finale' },
   },
 ]
 
