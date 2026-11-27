@@ -79,18 +79,35 @@ async function ask<T extends z.ZodType>(env: Env, system: string, user: string, 
 
 // ---------------------------------------------------------------- Endpunkte
 
+/** Buchstaben-Bedingungen («containing “age”», «ending in “-ism”») werden im Code geprüft – darauf ist bei der KI kein Verlass. */
+function letterRule(question: string, answer: string): string | null {
+  const word = answer.toLowerCase().replace(/[^a-zäöüß]/g, '')
+  const contains = question.match(/(?:containing|enthält)\s*[“"«']([^”"»']+)[”"»']/i)
+  if (contains && !word.includes(contains[1].toLowerCase().replace(/[^a-zäöüß]/g, '')))
+    return `«${answer}» enthält kein «${contains[1]}».`
+  const ending = question.match(/(?:ending in|endet auf)\s*[“"«']-?([^”"»']+)[”"»']/i)
+  if (ending && !word.endsWith(ending[1].toLowerCase().replace(/[^a-zäöüß]/g, '')))
+    return `«${answer}» endet nicht auf «-${ending[1].replace(/^-/, '')}».`
+  return null
+}
+
 async function rare(body: Record<string, unknown>, env: Env) {
   const question = str(body.question, 'question', 200)
   const answer = str(body.answer, 'answer', 80)
+  const broken = letterRule(question, answer)
+  if (broken) return { valid: false, rarity: 0, comment: `${broken} Versuch es nochmal.` }
   return ask(
     env,
     'Du bist die Jury eines Quiz-Spiels: Auf eine Frage gibt es viele richtige Antworten, und je seltener eine richtige Antwort ist, desto mehr Punkte gibt es. ' +
       'Prüfe, ob die Antwort die Frage korrekt beantwortet (sei grosszügig bei Tippfehlern und Schreibweisen, aber streng bei falschen Fakten). ' +
-      'Schätze die Seltenheit von 1 bis 100: Stell dir 100 zufällige Leute aus der Schweiz vor, die dieselbe Frage beantworten. rarity = 100 minus die Anzahl, die genau diese Antwort geben würden (die häufigste Antwort hat also ca. 1–20, eine Antwort, auf die fast niemand kommt, 90–100). ' +
+      'Bei Fragen wie «Wort, das … enthält/endet auf …» prüfe Buchstabe für Buchstabe, ob die Bedingung wirklich erfüllt ist und das Wort existiert. Verlangt die Frage ein Wort, zählen Eigennamen (Orte, Personen, Marken) nicht. ' +
+      'Antworten dürfen auf Deutsch oder Englisch sein (z. B. deutsche oder englische Filmtitel), ausser die Frage verlangt ausdrücklich ein englisches Wort. ' +
+      'Schreib zuerst in check kurz deine Prüfung (relevante Fakten bzw. das Wort Buchstabe für Buchstabe) und entscheide erst danach. ' +
+      'Schätze die Seltenheit von 1 bis 100: Stell dir 100 zufällige junge Erwachsene vor, die die Frage spontan beantworten (bei Fragen zur englischen Sprache: Leute, die gut Englisch können). rarity = 100 minus die Anzahl, die genau diese Antwort geben würden (die häufigste Antwort hat also ca. 1–20, eine Antwort, auf die fast niemand kommt, 90–100). ' +
       'Ist die Antwort ungültig, setze rarity auf 0 und erkläre im Kommentar kurz warum.',
     `Frage: ${question}\n<eingabe>${answer}</eingabe>`,
-    z.object({ valid: z.boolean(), rarity: z.number().int(), comment: z.string() }),
-  ).then((r) => ({ ...r, rarity: r.valid ? Math.min(100, Math.max(1, r.rarity)) : 0 }))
+    z.object({ check: z.string(), valid: z.boolean(), rarity: z.number().int(), comment: z.string() }),
+  ).then((r) => ({ valid: r.valid, rarity: r.valid ? Math.min(100, Math.max(1, r.rarity)) : 0, comment: r.comment }))
 }
 
 /**
