@@ -30,6 +30,11 @@ export function isUnlocked(day: number): boolean {
   return zurichDateString(now()) >= unlockDateString(day)
 }
 
+/** Zeitpunkt (ms), an dem Tag N freigeschaltet wird: N.12. 00:00 Zürcher Zeit (im Dezember immer MEZ = UTC+1). */
+export function unlockTime(day: number): number {
+  return Date.UTC(YEAR, 11, day) - 3_600_000
+}
+
 /** Ganze Tage bis zur Freischaltung (Zürcher Kalendertage). */
 export function daysUntil(day: number): number {
   const today = zurichDateString(now())

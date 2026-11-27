@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { DAYS } from '../content/days'
 import { HER_NAME, YEAR } from '../config'
 import { daysUntil, isUnlocked, todayDay } from '../lib/unlock'
 import { totalScore, updateProgress, useAllProgress } from '../lib/progress'
 import { useToast } from './Toast'
+import Countdown from './Countdown'
 import Icon, { TYPE_ICON } from './Icon'
 
 /** Feste "zufällige" Reihenfolge, damit die Türchen nicht 1–24 in Reihe stehen. */
@@ -38,6 +39,9 @@ export default function DoorGrid() {
     window.location.hash = `#/day/${n}`
   }
 
+  // Wird beim Ablauf des Countdowns hochgezählt, damit die Türchen ohne Neuladen aufgehen
+  const [, setTick] = useState(0)
+  const refresh = useCallback(() => setTick((t) => t + 1), [])
   const preDecember = today === null && !isUnlocked(1)
 
   return (
@@ -45,10 +49,9 @@ export default function DoorGrid() {
       <header className="hero">
         <h1>Advents&shy;kalender</h1>
         <div className="sub">
-          {preDecember
-            ? `für ${HER_NAME} · noch ${daysUntil(1)} Tage bis zum ersten Türchen`
-            : `für ${HER_NAME} · Dezember ${YEAR}`}
+          für {HER_NAME} · Dezember {YEAR}
         </div>
+        {preDecember && <Countdown onDone={refresh} />}
         {score > 0 && (
           <div style={{ marginTop: 12 }}>
             <span className="score-pill"><Icon name="star" /> {score.toLocaleString('de-CH')} Punkte</span>
