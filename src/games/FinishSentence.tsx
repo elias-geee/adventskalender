@@ -5,6 +5,7 @@ import { useGameState } from '../lib/progress'
 import { api, ApiError } from '../lib/api'
 import AiGate, { Loading } from '../components/AiGate'
 import { MY_NAME } from '../config'
+import Icon from '../components/Icon'
 
 type Rating = { ending: string; score: number; comment: string }
 type State = { ratings: Rating[] }
@@ -39,7 +40,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<SentenceContent>) {
       setInput('')
       if (ratings.length >= content.prompts.length && !solved) onSolved(ratings.reduce((s, x) => s + x.score * 100, 0))
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen 😵')
+      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen')
     } finally {
       setLoading(false)
     }
@@ -49,7 +50,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<SentenceContent>) {
     <div>
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <span className="tag">{done ? 'Fertig!' : `Satz ${idx + 1}/${content.prompts.length}`}</span>
-        <span className="score-pill">⭐ {total}</span>
+        <span className="score-pill"><Icon name="star" /> {total}</span>
       </div>
 
       {state.ratings.map((r, i) => (
@@ -62,7 +63,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<SentenceContent>) {
           </p>
           {content.prompts[i].mine && (
             <p className="muted" style={{ margin: '8px 0 0' }}>
-              💌 Antwort von {MY_NAME}: <b>{content.prompts[i].mine}</b>
+              <Icon name="mail" /> Antwort von {MY_NAME}: <b>{content.prompts[i].mine}</b>
             </p>
           )}
         </div>
@@ -81,7 +82,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<SentenceContent>) {
             disabled={loading}
           />
           <div className="center" style={{ marginTop: 10 }}>
-            <button className="btn" onClick={submit} disabled={loading || !input.trim()}>Abgeben ✍️</button>
+            <button className="btn" onClick={submit} disabled={loading || !input.trim()}>Abgeben <Icon name="pencil" /></button>
           </div>
         </>
       )}

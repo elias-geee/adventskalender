@@ -6,14 +6,15 @@ import type { GeoContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
 import Photo from '../components/Photo'
+import Icon, { PIN_SVG } from '../components/Icon'
 
 type Guess = { lat: number; lng: number; km: number; points: number }
 type State = { round: number; guesses: Guess[] }
 
-const pin = (emoji: string) =>
-  L.divIcon({ html: `<div style="font-size:30px;transform:translate(-50%,-90%)">${emoji}</div>`, className: '', iconSize: [0, 0] })
-const GUESS_PIN = pin('📍')
-const TRUE_PIN = pin('🎄')
+const pin = (fill: string) =>
+  L.divIcon({ html: `<div style="transform:translate(-50%,-92%);width:36px;height:36px">${PIN_SVG(fill)}</div>`, className: '', iconSize: [0, 0] })
+const GUESS_PIN = pin('#d7263d')
+const TRUE_PIN = pin('#1b998b')
 
 function haversineKm(a: [number, number], b: [number, number]) {
   const R = 6371, toRad = (x: number) => (x * Math.PI) / 180
@@ -74,9 +75,9 @@ export default function GeoGuess({ day, content, solved, onSolved }: GameProps<G
         <div className="tag">Ergebnis</div>
         <div className="big-date">{total} / {content.rounds.length * 1000}</div>
         {state.guesses.map((g, i) => (
-          <p key={i}>📸 {i + 1}: {fmtKm(g.km)} daneben – <b>{g.points}</b> Punkte{content.rounds[i].caption ? ` (${content.rounds[i].caption})` : ''}</p>
+          <p key={i}><Icon name="camera" /> {i + 1}: {fmtKm(g.km)} daneben – <b>{g.points}</b> Punkte{content.rounds[i].caption ? ` (${content.rounds[i].caption})` : ''}</p>
         ))}
-        <p>{total > content.rounds.length * 800 ? 'Du bist ein wandelndes GPS 🛰️' : total > content.rounds.length * 400 ? 'Solide Orientierung 🧭' : 'Google Maps ist dein bester Freund, oder? 😭'}</p>
+        <p>{total > content.rounds.length * 800 ? 'Du bist ein wandelndes GPS' : total > content.rounds.length * 400 ? 'Solide Orientierung' : 'Google Maps ist dein bester Freund, oder?'}</p>
       </div>
     )
   }
@@ -88,7 +89,7 @@ export default function GeoGuess({ day, content, solved, onSolved }: GameProps<G
     <div>
       <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
         <span className="tag">Foto {roundIdx + 1}/{content.rounds.length}</span>
-        <span className="score-pill">⭐ {total}</span>
+        <span className="score-pill"><Icon name="star" /> {total}</span>
       </div>
       <Photo src={round.img} alt="Wo ist das?" />
 
@@ -111,14 +112,14 @@ export default function GeoGuess({ day, content, solved, onSolved }: GameProps<G
       {guessed ? (
         <div className="center">
           <p style={{ fontSize: 18, fontWeight: 600 }}>
-            {fmtKm(guessed.km)} daneben → <b>{guessed.points}</b> Punkte {guessed.points > 900 ? '🎯' : guessed.points > 500 ? '🔥' : '🥲'}
+            {fmtKm(guessed.km)} daneben → <b>{guessed.points}</b> Punkte
           </p>
           {round.caption && <p>{round.caption}</p>}
-          <button className="btn green" onClick={next}>{state.round + 1 >= content.rounds.length ? 'Ergebnis 🏁' : 'Nächstes Foto →'}</button>
+          <button className="btn green" onClick={next}>{state.round + 1 >= content.rounds.length ? 'Ergebnis' : 'Nächstes Foto →'}</button>
         </div>
       ) : (
         <div className="center">
-          <button className="btn" disabled={!pick} onClick={submit}>{pick ? 'Hier! 📍' : 'Tipp auf die Karte'}</button>
+          <button className="btn" disabled={!pick} onClick={submit}>{pick ? <>Hier! <Icon name="pin" /></> : 'Tipp auf die Karte'}</button>
         </div>
       )}
     </div>

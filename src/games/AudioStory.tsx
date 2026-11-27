@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AudioContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
+import Icon from '../components/Icon'
 
 function fmt(s: number) {
   if (!isFinite(s)) return '0:00'
@@ -54,16 +55,16 @@ export default function AudioStory({ content, solved, onSolved }: GameProps<Audi
         onError={() => setError(true)}
       />
       <div className={`cover ${playing ? 'playing' : ''}`}>
-        {content.cover ? <img src={content.cover} alt="" /> : '🎧'}
+        {content.cover ? <img src={content.cover} alt="" /> : <Icon name="headphones" size="45%" />}
       </div>
       {content.description && <p style={{ fontWeight: 600 }}>{content.description}</p>}
 
       {error ? (
-        <div className="bubble">Das Hörspiel lädt gerade nicht 😭 (oder ist noch im Studio). Versuch’s später nochmal!</div>
+        <div className="bubble">Das Hörspiel lädt gerade nicht (oder ist noch im Studio). Versuch es später nochmal.</div>
       ) : (
         <>
           <button className="play-btn" onClick={toggle} aria-label={playing ? 'Pause' : 'Abspielen'}>
-            {playing ? '❚❚' : '▶'}
+            <Icon name={playing ? 'pause' : 'play'} size="44%" />
           </button>
           <div className={`bars ${playing ? 'on' : ''}`}>
             {Array.from({ length: 14 }, (_, i) => (

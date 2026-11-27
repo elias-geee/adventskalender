@@ -2,6 +2,8 @@ import { useState } from 'react'
 import type { MinesweeperContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
+import Icon from '../components/Icon'
+import type { ReactNode } from 'react'
 
 type State = {
   mines: number[] | null // Indizes, null = noch nicht generiert (erster Klick ist immer sicher)
@@ -12,8 +14,8 @@ type State = {
   losses: number
 }
 
-const MINE = '⚫'
-const FLAG = '🎁'
+const MINE = <Icon name="coal" />
+const FLAG = <Icon name="gift" />
 
 export default function Minesweeper({ day, content, solved, onSolved }: GameProps<MinesweeperContent>) {
   const { rows, cols } = content
@@ -87,7 +89,7 @@ export default function Minesweeper({ day, content, solved, onSolved }: GameProp
       <div className="row" style={{ justifyContent: 'center', marginBottom: 6 }}>
         <span className="score-pill">{MINE} {mineCount - state.flags.length}</span>
         <button className={`btn small ${flagMode ? 'pink' : 'white'}`} onClick={() => setFlagMode((f) => !f)}>
-          {flagMode ? `${FLAG} Markier-Modus AN` : `${FLAG} Markieren`}
+          {FLAG} {flagMode ? 'Markier-Modus AN' : 'Markieren'}
         </button>
       </div>
 
@@ -95,7 +97,7 @@ export default function Minesweeper({ day, content, solved, onSolved }: GameProp
         {Array.from({ length: total }, (_, i) => {
           const isOpen = openSet.has(i)
           const isMine = mineSet.has(i)
-          let label = ''
+          let label: ReactNode = ''
           let cls = 'ms-cell'
           if (isOpen) {
             const n = count(i)
@@ -123,11 +125,11 @@ export default function Minesweeper({ day, content, solved, onSolved }: GameProp
 
       {state.status === 'lost' && (
         <div>
-          <p style={{ fontWeight: 700, fontSize: 18 }}>Kohle erwischt 💀 Der Samichlaus ist enttäuscht.</p>
-          <button className="btn" onClick={() => setState({ ...fresh, losses: state.losses })}>Nochmal 🔁</button>
+          <p style={{ fontWeight: 700, fontSize: 18 }}>Kohle erwischt. Der Samichlaus ist enttäuscht.</p>
+          <button className="btn" onClick={() => setState({ ...fresh, losses: state.losses })}>Nochmal <Icon name="refresh" /></button>
         </div>
       )}
-      {state.status === 'won' && <p style={{ fontWeight: 700, fontSize: 20 }}>Alle Geschenke gerettet! 🎁✨</p>}
+      {state.status === 'won' && <p style={{ fontWeight: 700, fontSize: 20 }}>Alle Geschenke gerettet! <Icon name="gift" /></p>}
       <p className="muted">Tipp: Am Computer Rechtsklick zum Markieren.</p>
     </div>
   )

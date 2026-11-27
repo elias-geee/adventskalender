@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Icon from './Icon'
 
 /** Foto mit Vollbild-Ansicht: antippen = gross (am Handy seitlich wischbar), nochmal antippen/Esc = zu. */
 export default function Photo({ src, alt }: { src: string; alt: string }) {
@@ -27,12 +28,12 @@ export default function Photo({ src, alt }: { src: string; alt: string }) {
     <>
       <button className="photo-wrap" onClick={() => setOpen(true)} aria-label="Foto vergrössern">
         <img className="photo" src={src} alt={alt} />
-        <span className="photo-zoom">🔍 antippen</span>
+        <span className="photo-zoom"><Icon name="search" /> antippen</span>
       </button>
       {open && (
         <div className="lightbox" ref={box} onClick={() => setOpen(false)} role="dialog" aria-label={alt}>
           <img src={src} alt={alt} onLoad={center} />
-          <span className="lightbox-close">✕</span>
+          <span className="lightbox-close"><Icon name="x" /></span>
         </div>
       )}
     </>

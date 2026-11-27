@@ -5,6 +5,7 @@ import { useGameState } from '../lib/progress'
 import { api, ApiError } from '../lib/api'
 import { normalize } from '../lib/celebrate'
 import AiGate, { Loading } from '../components/AiGate'
+import Icon from '../components/Icon'
 
 type Guess = { word: string; warmth: number }
 type State = { guesses: Guess[]; hints: string[]; solved?: string; gaveUp?: string }
@@ -18,13 +19,11 @@ function color(w: number) {
   if (w >= 20) return '#9be3ff'
   return '#c9d6ff'
 }
-function emoji(w: number) {
-  if (w >= 100) return '🎯'
-  if (w >= 80) return '🔥'
-  if (w >= 60) return '🌶️'
-  if (w >= 40) return '☀️'
-  if (w >= 20) return '🧊'
-  return '🥶'
+function tempIcon(w: number) {
+  if (w >= 100) return <Icon name="target" />
+  if (w >= 60) return <Icon name="flame" />
+  if (w >= 40) return <Icon name="sun" />
+  return <Icon name="snowflake" />
 }
 
 export default function Contexto(props: GameProps<ContextoContent>) {
@@ -49,7 +48,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
     const word = input.trim()
     if (!word || loading || over) return
     if (state.guesses.some((g) => normalize(g.word) === normalize(word))) {
-      setError(`«${word}» hattest du schon 🙃`)
+      setError(`«${word}» hattest du schon`)
       setLatest(word)
       return
     }
@@ -63,7 +62,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
       setInput('')
       if (r.solved && !solved) onSolved(Math.max(100, 1000 - (guesses.length - 1) * 25 - state.hints.length * 100))
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen 😵')
+      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen')
     } finally {
       setLoading(false)
     }
@@ -77,21 +76,21 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
       const r = await api<{ hint: string }>('/contexto/hint', { puzzleId: content.puzzleId, best, previousHints: state.hints })
       setState({ ...state, hints: [...state.hints, r.hint] })
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Kein Tipp verfügbar 😵')
+      setError(e instanceof ApiError ? e.message : 'Kein Tipp verfügbar')
     } finally {
       setLoading(false)
     }
   }
 
   const giveUp = async () => {
-    if (!confirm('Wirklich aufgeben? 🥺')) return
+    if (!confirm('Wirklich aufgeben?')) return
     setLoading(true)
     try {
       const r = await api<{ word: string }>('/contexto/reveal', { puzzleId: content.puzzleId })
       setState({ ...state, gaveUp: r.word })
       if (!solved) onSolved(0)
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Fehler 😵')
+      setError(e instanceof ApiError ? e.message : 'Fehler')
     } finally {
       setLoading(false)
     }
@@ -102,7 +101,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
       {state.solved && (
         <div className="center">
           <div className="tag">Gefunden!</div>
-          <div className="big-date">{state.solved.toUpperCase()} 🎯</div>
+          <div className="big-date">{state.solved.toUpperCase()}</div>
           <p>in {state.guesses.length} {state.guesses.length === 1 ? 'Versuch' : 'Versuchen'}{state.hints.length ? ` mit ${state.hints.length} Tipp(s)` : ''}</p>
         </div>
       )}
@@ -131,8 +130,8 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
           <div className="row" style={{ justifyContent: 'space-between', marginTop: 10 }}>
             <span className="muted">{state.guesses.length} {state.guesses.length === 1 ? 'Versuch' : 'Versuche'}</span>
             <div className="row">
-              {state.guesses.length >= 5 && <button className="btn white small" onClick={hint} disabled={loading}>Tipp 💡</button>}
-              {state.guesses.length >= 10 && <button className="btn white small" onClick={giveUp} disabled={loading}>Aufgeben 🏳️</button>}
+              {state.guesses.length >= 5 && <button className="btn white small" onClick={hint} disabled={loading}>Tipp <Icon name="bulb" /></button>}
+              {state.guesses.length >= 10 && <button className="btn white small" onClick={giveUp} disabled={loading}>Aufgeben <Icon name="flag" /></button>}
             </div>
           </div>
         </>
@@ -141,7 +140,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
       {error && <p style={{ color: 'var(--red)', fontWeight: 600 }}>{error}</p>}
 
       {state.hints.map((h, i) => (
-        <div key={i} className="bubble">💡 {h}</div>
+        <div key={i} className="bubble"><Icon name="bulb" /> {h}</div>
       ))}
 
       <div className="ctx-list">
@@ -149,7 +148,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<ContextoContent>) {
           <div key={g.word} className={`ctx-item ${latest && normalize(latest) === normalize(g.word) ? 'latest' : ''}`}>
             <div className="fill" style={{ width: `${Math.max(4, g.warmth)}%`, background: color(g.warmth) }} />
             <span>{g.word}</span>
-            <span>{emoji(g.warmth)} {g.warmth}°</span>
+            <span>{tempIcon(g.warmth)} {g.warmth}°</span>
           </div>
         ))}
       </div>

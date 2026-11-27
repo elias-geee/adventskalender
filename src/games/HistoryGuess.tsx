@@ -3,6 +3,7 @@ import type { HistoryContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
 import Photo from '../components/Photo'
+import Icon from '../components/Icon'
 
 type Guess = { value: number; diff: number; points: number }
 type State = { round: number; guesses: Guess[] }
@@ -36,7 +37,7 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
         <div className="tag">Ergebnis</div>
         <div className="big-date">{total} / {content.rounds.length * 1000}</div>
         {state.guesses.map((g, i) => (
-          <p key={i}>📸 {i + 1}: {g.diff === 0 ? 'exakt!' : `${g.diff} ${precision === 'year' ? 'Jahr(e)' : 'Monat(e)'} daneben`} – <b>{g.points}</b></p>
+          <p key={i}><Icon name="camera" /> {i + 1}: {g.diff === 0 ? 'exakt!' : `${g.diff} ${precision === 'year' ? 'Jahr(e)' : 'Monat(e)'} daneben`} – <b>{g.points}</b></p>
         ))}
       </div>
     )
@@ -58,7 +59,7 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
     <div>
       <div className="row" style={{ justifyContent: 'space-between', marginBottom: 8 }}>
         <span className="tag">Foto {state.round + 1}/{content.rounds.length}</span>
-        <span className="score-pill">⭐ {total}</span>
+        <span className="score-pill"><Icon name="star" /> {total}</span>
       </div>
       <Photo src={round.img} alt="Wann war das?" />
       {round.caption && <p className="center" style={{ fontWeight: 600 }}>{round.caption}</p>}
@@ -86,15 +87,15 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
         {guessed ? (
           <>
             <p style={{ fontSize: 18, fontWeight: 600 }}>
-              Richtig wäre: <b>{label(truth, precision)}</b> → {guessed.points} Punkte {guessed.diff === 0 ? '🎯' : guessed.points > 500 ? '🔥' : '🥲'}
+              Richtig wäre: <b>{label(truth, precision)}</b> → {guessed.points} Punkte
             </p>
             {round.story && <div className="bubble">{round.story}</div>}
             <button className="btn green" onClick={() => { setState({ ...state, round: state.round + 1 }); setValue(Math.round((min + max) / 2)) }}>
-              {state.round + 1 >= content.rounds.length ? 'Ergebnis 🏁' : 'Nächstes Foto →'}
+              {state.round + 1 >= content.rounds.length ? 'Ergebnis' : 'Nächstes Foto →'}
             </button>
           </>
         ) : (
-          <button className="btn" onClick={submit}>Das ist mein Tipp! ⏳</button>
+          <button className="btn" onClick={submit}>Das ist mein Tipp! <Icon name="hourglass" /></button>
         )}
       </div>
     </div>

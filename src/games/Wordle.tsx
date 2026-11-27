@@ -5,6 +5,7 @@ import type { GameProps } from '../components/DayPage'
 import { getProgress, useGameState } from '../lib/progress'
 import { useToast } from '../components/Toast'
 import { api, apiConfigured } from '../lib/api'
+import Icon from '../components/Icon'
 
 type Mark = 'correct' | 'present' | 'absent'
 type State = { guesses: string[][]; gaveUp?: boolean }
@@ -49,7 +50,7 @@ async function isRealWord(word: string, lang: 'de' | 'en'): Promise<boolean> {
   }
 }
 
-const WIN_LINES = ['GENIUS 🧠', 'Unglaublich 🔥', 'Stark 💪', 'Nice 😎', 'Puh, knapp 😅', 'Gerade noch 😮‍💨', 'Last second W 🫠']
+const WIN_LINES = ['Genial!', 'Unglaublich!', 'Stark!', 'Sehr gut!', 'Gut gemacht!', 'Puh, knapp!', 'Gerade noch!']
 
 export default function Wordle({ day, content, solved, onSolved }: GameProps<WordleContent>) {
   const target = useMemo(() => Array.from(content.word.toUpperCase()), [content.word])
@@ -94,7 +95,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
         if (cur.length < len) {
           setShake(true)
           setTimeout(() => setShake(false), 400)
-          showToast('Zu kurz, bestie 🤏')
+          showToast('Zu kurz')
           return
         }
         const commit = () => {
@@ -106,7 +107,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
             showToast(WIN_LINES[Math.min(guesses.length - 1, WIN_LINES.length - 1)])
             if (!solved) onSolved((maxTries - guesses.length + 1) * 100)
           } else if (guesses.length >= maxTries) {
-            showToast('Oof 💀', 2500)
+            showToast('Schade!', 2500)
           }
         }
         const word = cur.join('')
@@ -119,7 +120,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
           if (ok) return commit()
           setShake(true)
           setTimeout(() => setShake(false), 400)
-          showToast(lang === 'en' ? 'Kein englisches Wort 🤔' : 'Kein Wort, das ich kenne 🤔')
+          showToast(lang === 'en' ? 'Kein englisches Wort' : 'Kein Wort, das ich kenne')
         })
         return
       }
@@ -174,16 +175,16 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
         <div className="center">
           {won ? (
             <p style={{ fontSize: 20, fontWeight: 700 }}>
-              Gelöst in {state.guesses.length}/{maxTries} 🎉
+              Gelöst in {state.guesses.length}/{maxTries}
             </p>
           ) : (
             <>
               <p style={{ fontSize: 18, fontWeight: 600 }}>
-                {state.gaveUp ? 'Das Wort war:' : 'Knapp daneben ist auch vorbei 💀 Das Wort war:'}{' '}
+                {state.gaveUp ? 'Das Wort war:' : 'Knapp daneben ist auch vorbei. Das Wort war:'}{' '}
                 <b>{target.join('')}</b>
               </p>
               {!state.gaveUp && (
-                <button className="btn" onClick={() => setState({ guesses: [] })}>Nochmal 🔁</button>
+                <button className="btn" onClick={() => setState({ guesses: [] })}>Nochmal <Icon name="refresh" /></button>
               )}
             </>
           )}
@@ -206,13 +207,13 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
               <button
                 className="btn white small"
                 onClick={() => {
-                  if (confirm('Wirklich aufgeben? 🥺')) {
+                  if (confirm('Wirklich aufgeben?')) {
                     setState({ ...state, gaveUp: true })
                     onSolved(0)
                   }
                 }}
               >
-                Ich geb auf 🏳️
+                Ich geb auf <Icon name="flag" />
               </button>
             </div>
           )}

@@ -16,7 +16,7 @@ export async function api<T>(path: string, body?: unknown): Promise<T> {
       body: body === undefined ? undefined : JSON.stringify(body),
     })
   } catch {
-    throw new ApiError('Keine Verbindung zum Server 😵 Check dein Internet.')
+    throw new ApiError('Keine Verbindung zum Server. Bitte Internetverbindung prüfen.')
   }
   const data = (await res.json().catch(() => ({}))) as T & { error?: string }
   if (!res.ok) throw new ApiError(data.error ?? `Serverfehler (${res.status})`)

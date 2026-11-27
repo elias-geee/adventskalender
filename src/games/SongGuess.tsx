@@ -6,6 +6,7 @@ import { api, apiConfigured } from '../lib/api'
 import { fuzzyMatch } from '../lib/celebrate'
 import { Loading } from '../components/AiGate'
 import { useToast } from '../components/Toast'
+import Icon from '../components/Icon'
 
 const STAGES = [1, 2, 4, 8, 16]
 
@@ -110,10 +111,10 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
     const guesses = [...state.guesses, g]
     const ok = [song.title, ...(song.alt ?? [])].some((a) => fuzzyMatch(g, a))
     if (ok) {
-      showToast('YESSS 🎉')
+      showToast('Richtig!')
       finishSong(true, guesses)
     } else {
-      showToast('Nope 🙅‍♀️')
+      showToast('Leider nicht')
       skip(guesses)
     }
   }
@@ -139,7 +140,7 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
         <div className="big-date">{total} Punkte</div>
         {content.songs.map((s, i) => (
           <p key={i}>
-            {state.results[i]?.correct ? '✅' : '❌'} <b>{s.title}</b> – {s.artist}
+            <Icon name={state.results[i]?.correct ? 'check' : 'x'} /> <b>{s.title}</b> – {s.artist}
             {state.results[i]?.correct && <span className="muted"> (nach {STAGES[state.results[i].stage]}s)</span>}
           </p>
         ))}
@@ -153,14 +154,14 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
     <div>
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <span className="tag">Song {state.idx + 1}/{content.songs.length}</span>
-        <span className="score-pill">⭐ {total}</span>
+        <span className="score-pill"><Icon name="star" /> {total}</span>
       </div>
 
       {res && <audio ref={audio} src={res.url} preload="auto" />}
 
       <div className="player" style={{ marginTop: 16 }}>
         <div className={`cover ${playing ? 'playing' : ''}`} style={{ background: 'var(--pink)' }}>
-          {result && res?.artwork ? <img src={res.artwork} alt="" /> : '🎵'}
+          {result && res?.artwork ? <img src={res.artwork} alt="" /> : <Icon name="music" size="45%" />}
         </div>
 
         {/* Fortschrittsbalken mit Stufen */}
@@ -173,12 +174,12 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
         </div>
 
         {loadErr ? (
-          <div className="bubble">Der Song lädt nicht 😭 Versuch’s später nochmal.</div>
+          <div className="bubble">Der Song lädt gerade nicht. Versuch es später nochmal.</div>
         ) : !res ? (
           <Loading text="Song wird geladen" />
         ) : (
           <button className="play-btn" onClick={() => play(result ? 30 : seconds)} disabled={playing}>
-            {playing ? '♪' : '▶'}
+            <Icon name={playing ? 'pause' : 'play'} size="44%" />
           </button>
         )}
         <p className="muted">{result ? 'Ganzer Schnipsel' : `${seconds} Sekunde${seconds > 1 ? 'n' : ''}`}</p>
@@ -187,7 +188,7 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
       {state.guesses.length > 0 && (
         <div style={{ margin: '8px 0' }}>
           {state.guesses.map((g, i) => (
-            <div key={i} className="muted">❌ {g}</div>
+            <div key={i} className="muted"><Icon name="x" /> {g}</div>
           ))}
         </div>
       )}
@@ -195,9 +196,9 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
       {result ? (
         <div className="center">
           <p style={{ fontSize: 20, fontWeight: 700 }}>
-            {result.correct ? '🎉 Richtig!' : '💀 Leider nicht.'} Es war <b>{song.title}</b> von {song.artist}
+            {result.correct ? 'Richtig!' : 'Leider nicht.'} Es war <b>{song.title}</b> von {song.artist}
           </p>
-          <button className="btn green" onClick={nextSong}>{state.idx + 1 >= content.songs.length ? 'Endstand 🏁' : 'Nächster Song →'}</button>
+          <button className="btn green" onClick={nextSong}>{state.idx + 1 >= content.songs.length ? 'Endstand' : 'Nächster Song →'}</button>
         </div>
       ) : (
         <>
@@ -213,7 +214,7 @@ export default function SongGuess({ day, content, solved, onSolved }: GameProps<
           </div>
           <div className="center" style={{ marginTop: 10 }}>
             <button className="btn white small" onClick={() => skip()}>
-              {state.stage + 1 >= STAGES.length ? 'Aufgeben 🏳️' : `Skip (+${STAGES[state.stage + 1] - STAGES[state.stage]}s) ⏭️`}
+              {state.stage + 1 >= STAGES.length ? <>Aufgeben <Icon name="flag" /></> : <>Skip (+{STAGES[state.stage + 1] - STAGES[state.stage]}s) <Icon name="skip" /></>}
             </button>
           </div>
         </>

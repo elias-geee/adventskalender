@@ -15,6 +15,7 @@ import FinishSentence from '../games/FinishSentence'
 import SongGuess from '../games/SongGuess'
 import GeoGuess from '../games/GeoGuess'
 import HistoryGuess from '../games/HistoryGuess'
+import Icon, { TYPE_ICON } from './Icon'
 
 export type GameProps<T extends DayContent> = {
   day: number
@@ -41,7 +42,7 @@ function renderGame(day: number, c: DayContent, solved: boolean, onSolved: (s: n
   }
 }
 
-const DEFAULT_REWARDS = ['Slay 💅 Türchen erledigt!', 'Main character energy ✨', 'Absolut iconic. 10/10 🎄', 'W. Einfach W. 🏆']
+const DEFAULT_REWARDS = ['Türchen geschafft!', 'Gut gemacht!', 'Stark gelöst!', 'Wieder eins geschafft!']
 
 export default function DayPage({ day }: { day: number }) {
   const d = getDay(day)
@@ -60,7 +61,7 @@ export default function DayPage({ day }: { day: number }) {
     return (
       <div className="container">
         <a className="btn white small" href="#/">← zurück</a>
-        <div className="panel">Für Tag {day} ist noch nichts eingetragen 🤷</div>
+        <div className="panel">Für Tag {day} ist noch nichts eingetragen.</div>
       </div>
     )
   }
@@ -72,17 +73,17 @@ export default function DayPage({ day }: { day: number }) {
         <span className="tag">Tag {day}</span>
       </div>
 
-      <h2 className="title-burst">{d.emoji} {d.title}</h2>
+      <h2 className="title-burst"><Icon name={d.icon ?? TYPE_ICON[d.content.type]} className="title-icon" /> {d.title}</h2>
       {d.intro && <div className="bubble">{d.intro}</div>}
 
       <div className="panel">{renderGame(day, d.content, !!progress.solved, onSolved)}</div>
 
       {progress.solved && (
         <div className="reward">
-          {d.reward ?? DEFAULT_REWARDS[day % DEFAULT_REWARDS.length]}
+          <Icon name="sparkle" /> {d.reward ?? DEFAULT_REWARDS[day % DEFAULT_REWARDS.length]}
           {(progress.score ?? 0) > 0 && (
             <div style={{ marginTop: 8 }}>
-              <span className="score-pill">+{progress.score} Punkte</span>
+              <span className="score-pill"><Icon name="star" /> +{progress.score} Punkte</span>
             </div>
           )}
         </div>
@@ -93,7 +94,7 @@ export default function DayPage({ day }: { day: number }) {
           <div className="tag">Gesamtpunktzahl</div>
           <div className="total">{totalScore().toLocaleString('de-CH')}</div>
           <p>
-            Frohe Weihnachten, {HER_NAME}! 🎄❤️<br />
+            Frohe Weihnachten, {HER_NAME}! <Icon name="heart" /><br />
             Danke, dass du jeden Tag mitgemacht hast.<br />– {MY_NAME}
           </p>
         </div>

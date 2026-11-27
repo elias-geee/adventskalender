@@ -3,6 +3,7 @@ import type { KeyboardEvent } from 'react'
 import type { CrosswordContent, CrosswordEntry } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { getProgress, useGameState } from '../lib/progress'
+import Icon from '../components/Icon'
 
 type State = { letters: Record<string, string>; checks: number; revealed?: boolean }
 type Dir = 'across' | 'down'
@@ -133,7 +134,7 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
   return (
     <div>
       <div className="cw-clue-active">
-        {activeEntry ? `${activeEntry.num} ${activeEntry.dir === 'across' ? '→' : '↓'} ${activeEntry.clue}` : 'Tipp auf ein Feld, um loszulegen ✏️'}
+        {activeEntry ? `${activeEntry.num} ${activeEntry.dir === 'across' ? '→' : '↓'} ${activeEntry.clue}` : 'Tipp auf ein Feld, um loszulegen'}
       </div>
       <div ref={scroller} className={big ? 'cw-scroll' : undefined}>
       <div className={`cw-grid ${big ? 'big' : ''}`} style={{ gridTemplateColumns: `repeat(${cols}, auto)` }}>
@@ -175,7 +176,7 @@ export default function Crossword({ day, content, solved, onSolved }: GameProps<
       {!solved && (
         <div className="row" style={{ justifyContent: 'center', margin: '10px 0' }}>
           <button className="btn white small" onClick={() => { setShowCheck(true); setState({ ...state, checks: state.checks + 1 }) }}>
-            Prüfen 🔍
+            Prüfen <Icon name="search" />
           </button>
         </div>
       )}

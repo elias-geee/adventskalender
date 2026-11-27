@@ -1,3 +1,5 @@
+import type { IconName } from '../components/Icon'
+
 // Typen für alle Türchen-Inhalte. Du musst hier nichts ändern – befülle content/days.ts.
 
 export type AudioContent = {
@@ -55,7 +57,7 @@ export type TwentyContent = {
   type: 'twenty'
   /** ID im Worker (worker/src/puzzles.ts). Die Person steht NUR dort. */
   puzzleId: string
-  /** kleiner Hinweis zum Start, z. B. "Es ist eine echte Person 👀" */
+  /** kleiner Hinweis zum Start, z. B. "Es ist eine echte Person" */
   hint?: string
   maxQuestions?: number
 }
@@ -136,11 +138,11 @@ export type DayContent =
 export type Day = {
   day: number
   title: string
-  /** Emoji, das nach dem Öffnen auf dem Türchen erscheint */
-  emoji: string
+  /** Symbol auf dem geöffneten Türchen und im Titel (Standard: passend zum Spieltyp). Namen siehe src/components/Icon.tsx */
+  icon?: IconName
   /** kurzer Einleitungstext oben */
   intro?: string
-  /** Nachricht, die nach dem Lösen erscheint (z. B. ein kleiner Liebesgruss 💌) */
+  /** Nachricht, die nach dem Lösen erscheint (z. B. ein kleiner Liebesgruss) */
   reward?: string
   content: DayContent
 }

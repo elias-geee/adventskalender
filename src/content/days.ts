@@ -1,7 +1,7 @@
 import type { Day } from './types'
 
 /*
- * ⭐ HIER befüllst du den Kalender ⭐
+ * HIER befüllst du den Kalender
  *
  * Jeder Tag hat einen `content.type`:
  *   audio · wordle · crossword · minesweeper · rare · contexto · twenty · sentence · song · geo · history
@@ -17,23 +17,21 @@ export const DAYS: Day[] = [
   {
     day: 1,
     title: 'Warm-up Wordle',
-    emoji: '🔤',
-    intro: 'Tag 1, let’s goooo 🎄 Heute auf Englisch 🇬🇧 Errate das englische Wort mit 6 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
-    reward: 'Slay! Erstes Türchen geschafft 💅 Nur noch 23 Mal schlafen.',
+    intro: 'Das erste Türchen! Heute auf Englisch: Errate das englische Wort mit 6 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
+    reward: 'Erstes Türchen geschafft! Nur noch 23 Mal schlafen.',
     content: { type: 'wordle', word: 'PETITE', lang: 'en' },
   },
   {
     day: 2,
     title: 'Kohle-Sweeper',
-    emoji: '🎁',
-    intro: 'Unter manchen Feldern liegt Kohle ⚫ (für unartige Kinder). Deck alle sicheren Felder auf! Zahlen = Kohle in der Nähe.',
-    reward: 'Du warst offiziell artig dieses Jahr ✨',
+    icon: 'gift',
+    intro: 'Unter manchen Feldern liegt Kohle (für unartige Kinder). Deck alle sicheren Felder auf! Zahlen = Kohle in der Nähe.',
+    reward: 'Du warst offiziell artig dieses Jahr.',
     content: { type: 'minesweeper', rows: 8, cols: 8, mines: 9 },
   },
   {
     day: 3,
-    title: 'Sei kein NPC',
-    emoji: '🦄',
+    title: 'Selten gewinnt',
     intro: 'Gib Antworten, auf die sonst niemand kommt. Je seltener (aber richtig!), desto mehr Punkte.',
     content: {
       type: 'rare',
@@ -47,7 +45,6 @@ export const DAYS: Day[] = [
   {
     day: 4,
     title: 'Song-Guessr',
-    emoji: '🎵',
     intro: 'Du hörst nur einen winzigen Schnipsel. Erkennst du den Song? Jeder Skip macht den Schnipsel länger.',
     content: {
       type: 'song',
@@ -61,8 +58,8 @@ export const DAYS: Day[] = [
   {
     day: 5,
     title: 'Musik-Kreuzworträtsel',
-    emoji: '🎸',
-    intro: 'The History of Popular Music: von Elvis bis Taylor Swift 🎶 Namen ohne Leerzeichen und Sonderzeichen eintippen (AC/DC → ACDC, Beyoncé → BEYONCE).',
+    icon: 'music',
+    intro: 'The History of Popular Music: von Elvis bis Taylor Swift. Namen ohne Leerzeichen und Sonderzeichen eintippen (AC/DC → ACDC, Beyoncé → BEYONCE).',
     content: {
       type: 'crossword',
       entries: [
@@ -81,7 +78,7 @@ export const DAYS: Day[] = [
         { answer: 'JIMIHENDRIX', clue: 'Einflussreicher Gitarrist, berühmt für “Purple Haze” (1967)', row: 18, col: 26, dir: 'across' },
         { answer: 'MUSICVIDEO', clue: 'Visuelles Format, das in den 1980ern für Künstler:innen unverzichtbar wurde (engl.)', row: 18, col: 38, dir: 'across' },
         { answer: 'TUPAC', clue: 'Einflussreicher Rapper, bekannt für “California Love” (1995)', row: 20, col: 4, dir: 'across' },
-        { answer: 'MARIAHCAREY', clue: 'Sängerin von “All I Want for Christmas Is You” (1994) 🎄', row: 20, col: 17, dir: 'across' },
+        { answer: 'MARIAHCAREY', clue: 'Sängerin von “All I Want for Christmas Is You” (1994)', row: 20, col: 17, dir: 'across' },
         { answer: 'AUTOTUNE', clue: 'Technik, mit der in moderner Musik die Tonhöhe der Stimme verändert wird', row: 20, col: 29, dir: 'across' },
         { answer: 'DISCO', clue: 'Tanzorientiertes Genre, populär in den 1970ern', row: 22, col: 24, dir: 'across' },
         { answer: 'EMINEM', clue: 'Rapper, bekannt für “Lose Yourself” (2002)', row: 23, col: 1, dir: 'across' },
@@ -118,21 +115,18 @@ export const DAYS: Day[] = [
   {
     day: 6,
     title: 'Ausgeknipst',
-    emoji: '🎧',
-    intro: 'Kopfhörer rein, Licht aus, Tee an ☕',
+    intro: 'Kopfhörer rein, Licht aus, Tee an.',
     content: { type: 'audio', src: 'audio/day06.mp3', description: 'Hörspiel · Folge 1' },
   },
   {
     day: 7,
     title: 'Contexto',
-    emoji: '🌡️',
-    intro: 'Ich denke an ein Wort. Rate drauflos – je näher dein Wort inhaltlich dran ist, desto wärmer wird’s 🔥',
+    intro: 'Ich denke an ein Wort. Rate drauflos – je näher dein Wort inhaltlich dran ist, desto wärmer wird es.',
     content: { type: 'contexto', puzzleId: 'c1' },
   },
   {
     day: 8,
     title: 'Satz beenden',
-    emoji: '💬',
     intro: 'Beende die Sätze so kreativ wie möglich. Die KI-Jury bewertet (sie ist streng, aber fair).',
     content: {
       type: 'sentence',
@@ -146,8 +140,7 @@ export const DAYS: Day[] = [
   {
     day: 9,
     title: 'Geo-Guessr',
-    emoji: '🗺️',
-    intro: 'Wo wurde dieses Foto gemacht? 6 Orte – setz deinen Pin so genau wie möglich. Je näher, desto mehr Punkte, hier zählt jede Strasse 📍',
+    intro: 'Wo wurde dieses Foto gemacht? 6 Orte – setz deinen Pin so genau wie möglich. Je näher, desto mehr Punkte, hier zählt jede Strasse.',
     content: {
       type: 'geo',
       center: [47.37, 8.1],
@@ -166,35 +159,30 @@ export const DAYS: Day[] = [
   {
     day: 10,
     title: 'Weihnachten wieder hier',
-    emoji: '🎧',
-    intro: 'Folge 2 ist da – Decke holen, Kakao machen ☕',
+    intro: 'Folge 2 ist da – Decke holen, Kakao machen.',
     content: { type: 'audio', src: 'audio/day10.mp3', description: 'Hörspiel · Folge 2' },
   },
   {
     day: 11,
     title: 'Wer bin ich?',
-    emoji: '🕵️',
     intro: 'Ich denke an eine Person. Stell Ja/Nein-Fragen und finde raus, wer es ist. Du hast 20 Fragen.',
-    content: { type: 'twenty', puzzleId: 't1', hint: 'Es ist eine bekannte Person 👀' },
+    content: { type: 'twenty', puzzleId: 't1', hint: 'Es ist eine bekannte Person.' },
   },
   {
     day: 12,
     title: 'Wordle 2.0',
-    emoji: '🔠',
-    intro: 'Wieder auf Englisch 🇬🇧 Diesmal ein langes Wort: 9 Buchstaben, 7 Versuche. Good luck 🍀',
+    intro: 'Wieder auf Englisch, diesmal ein langes Wort: 9 Buchstaben, 7 Versuche. Viel Glück!',
     content: { type: 'wordle', word: 'HONEYMOON', maxTries: 7, lang: 'en' },
   },
   {
     day: 13,
     title: 'Morgen, Kinder, wird’s was geben',
-    emoji: '🎧',
-    intro: 'Zeit für Folge 3 – Kopfhörer auf und los 🎄',
+    intro: 'Zeit für Folge 3 – Kopfhörer auf und los.',
     content: { type: 'audio', src: 'audio/day13.mp3', description: 'Hörspiel · Folge 3' },
   },
   {
     day: 14,
     title: 'History-Guessr',
-    emoji: '📸',
     intro: 'Wann wurde dieses Foto gemacht? Schieb den Regler!',
     content: {
       type: 'history',
@@ -202,15 +190,14 @@ export const DAYS: Day[] = [
       from: '2022-01',
       to: '2026-12',
       rounds: [
-        { img: 'img/placeholder-1.svg', date: '2024-07', caption: 'Platzhalter', story: 'Hier könnte eine kleine Erinnerung stehen 💕' },
+        { img: 'img/placeholder-1.svg', date: '2024-07', caption: 'Platzhalter', story: 'Hier könnte eine kleine Erinnerung stehen.' },
         { img: 'img/placeholder-2.svg', date: '2025-02' },
       ],
     },
   },
   {
     day: 15,
-    title: 'Sei kein NPC 2',
-    emoji: '🦄',
+    title: 'Selten gewinnt 2',
     content: {
       type: 'rare',
       questions: ['Nenne ein Wort, das sich auf «Schnee» reimt', 'Nenne eine Zutat für Weihnachtsguetzli', 'Nenne einen berühmten Hund'],
@@ -219,7 +206,6 @@ export const DAYS: Day[] = [
   {
     day: 16,
     title: 'Song-Guessr 2',
-    emoji: '🎶',
     content: {
       type: 'song',
       songs: [
@@ -232,8 +218,7 @@ export const DAYS: Day[] = [
   {
     day: 17,
     title: 'Geo-Guessr 2',
-    emoji: '📍',
-    intro: 'Round 2: Wo waren wir hier? Pin setzen und hoffen 🤞',
+    intro: 'Runde 2: Wo waren wir hier? Pin setzen und hoffen.',
     content: {
       type: 'geo',
       center: [46.8, 8.2],
@@ -249,34 +234,31 @@ export const DAYS: Day[] = [
   {
     day: 18,
     title: 'Contexto 2',
-    emoji: '🌡️',
     content: { type: 'contexto', puzzleId: 'c2' },
   },
   {
     day: 19,
     title: 'Kohle-Sweeper HARD',
-    emoji: '💣',
-    intro: 'Same game, aber diesmal mit extra viel Kohle. Good luck bestie 🫡',
+    icon: 'coal',
+    intro: 'Gleiches Spiel, aber diesmal mit extra viel Kohle. Viel Glück!',
     content: { type: 'minesweeper', rows: 12, cols: 9, mines: 20 },
   },
   {
     day: 20,
     title: 'Fräulein Petterssons Haus',
-    emoji: '🎧',
-    intro: 'Folge 4 – nur noch vier Mal schlafen 🎄 Kopfhörer auf!',
+    intro: 'Folge 4 – nur noch vier Mal schlafen. Kopfhörer auf!',
     content: { type: 'audio', src: 'audio/day20.mp3', description: 'Hörspiel · Folge 4' },
   },
   {
     day: 21,
     title: 'Wer bin ich? 2',
-    emoji: '🕵️‍♀️',
-    content: { type: 'twenty', puzzleId: 't2', hint: 'Diesmal jemand, den wir beide kennen 😏' },
+    content: { type: 'twenty', puzzleId: 't2', hint: 'Diesmal jemand, den wir beide gut kennen.' },
   },
   {
     day: 22,
     title: 'Friends-Kreuzworträtsel',
-    emoji: '🛋️',
-    intro: 'The One with the Crossword ☕ Alle Antworten sind auf Englisch – so wie wir’s geschaut haben.',
+    icon: 'cup',
+    intro: 'The One with the Crossword. Alle Antworten sind auf Englisch – so wie wir’s geschaut haben.',
     content: {
       type: 'crossword',
       entries: [
@@ -313,7 +295,6 @@ export const DAYS: Day[] = [
   {
     day: 23,
     title: 'Satz beenden 2',
-    emoji: '💬',
     content: {
       type: 'sentence',
       prompts: [{ start: 'Nächstes Jahr an Weihnachten will ich unbedingt ...' }, { start: 'Das Beste an uns zwei ist ...' }],
@@ -322,8 +303,8 @@ export const DAYS: Day[] = [
   {
     day: 24,
     title: 'Nichts als Hirngespinste',
-    emoji: '⭐',
-    intro: 'Frohe Weihnachten! 🎄❤️ Das grosse Finale.',
+    icon: 'star',
+    intro: 'Frohe Weihnachten! Das grosse Finale.',
     content: { type: 'audio', src: 'audio/day24.mp3', description: 'Hörspiel · Folge 5 – Das Finale' },
   },
 ]

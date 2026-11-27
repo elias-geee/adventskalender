@@ -320,7 +320,35 @@ input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
 .finale { text-align: center; }
 .finale .total { font-family: var(--font-title); font-size: 64px; color: var(--gold); -webkit-text-stroke: 2px var(--ink); text-shadow: 4px 4px 0 var(--ink); }
 
-.spin { display: inline-block; animation: spin 1s linear infinite; }
+.spin { display: inline-flex; animation: spin 1.6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .footer { text-align: center; color: var(--white); font-weight: 600; text-shadow: 1px 1px 0 var(--ink); margin-top: 30px; }
+
+/* ---------- Icons (eigenes Set statt Emojis) ---------- */
+.icon { display: inline-block; vertical-align: -0.2em; flex-shrink: 0; overflow: visible; }
+.icon .f-gold { fill: var(--gold); }
+.icon .f-red { fill: var(--red); }
+.icon .f-green { fill: var(--green); }
+.icon .f-white { fill: var(--white); }
+.icon .f-sky { fill: var(--sky); }
+.icon .f-ink { fill: var(--ink); }
+.icon .f-orange { fill: #ff8c42; }
+.icon .s-white { stroke: var(--white); }
+.icon .s-red { stroke: var(--red); }
+.door .icon { overflow: visible; }
+.door.opened .emoji { display: flex; }
+.door.opened .emoji .icon { width: clamp(30px, 8vw, 42px); height: clamp(30px, 8vw, 42px); }
+.door .check .icon { width: 18px; height: 18px; stroke: var(--green); stroke-width: 3; }
+.door.locked .lock .icon { width: 18px; height: 18px; }
+.title-burst .title-icon {
+  width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-right: 6px; padding: 3px; color: var(--ink);
+  background: var(--cream); border: 2.5px solid var(--ink); border-radius: 10px; box-shadow: 2px 2px 0 var(--ink); transform: rotate(-4deg);
+}
+.score-pill .icon .f-gold { fill: var(--white); }
+.play-btn { display: inline-flex; align-items: center; justify-content: center; }
+.play-btn .icon .f-ink { fill: var(--white); }
+.play-btn .icon { stroke: var(--white); }
+.player .cover { display: flex; align-items: center; justify-content: center; }
+.snow span .icon { vertical-align: 0; }
+.footer .icon { width: 1.1em; height: 1.1em; }

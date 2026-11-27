@@ -4,6 +4,7 @@ import type { GameProps } from '../components/DayPage'
 import { useGameState } from '../lib/progress'
 import { api, ApiError } from '../lib/api'
 import AiGate, { Loading } from '../components/AiGate'
+import Icon from '../components/Icon'
 
 type Verdict = { answer: string; valid: boolean; rarity: number; comment: string }
 type State = { q: number; results: (Verdict | null)[]; attempts: Verdict[][] }
@@ -11,11 +12,11 @@ type State = { q: number; results: (Verdict | null)[]; attempts: Verdict[][] }
 const MAX_ATTEMPTS = 3
 
 function rarityLabel(r: number) {
-  if (r >= 90) return '🦄 Legendär'
-  if (r >= 70) return '💎 Super selten'
-  if (r >= 45) return '✨ Selten'
-  if (r >= 20) return '🙂 Okay'
-  return '🐑 NPC-Antwort'
+  if (r >= 90) return 'Legendär'
+  if (r >= 70) return 'Super selten'
+  if (r >= 45) return 'Selten'
+  if (r >= 20) return 'Okay'
+  return 'Klassiker'
 }
 
 export default function RareAnswers(props: GameProps<RareContent>) {
@@ -49,9 +50,9 @@ function Inner({ day, content, solved, onSolved }: GameProps<RareContent>) {
               <b>{q}</b>
               <br />
               {r ? (
-                <>→ «{r.answer}» {r.valid ? `${rarityLabel(r.rarity)} (+${r.rarity * 10})` : '❌'}</>
+                <>→ «{r.answer}» {r.valid ? `${rarityLabel(r.rarity)} (+${r.rarity * 10})` : <Icon name="x" />}</>
               ) : (
-                '→ keine gültige Antwort 😶'
+                '→ keine gültige Antwort'
               )}
             </div>
           )
@@ -81,7 +82,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<RareContent>) {
       setState({ ...state, attempts: allAttempts, results })
       setInput('')
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen 😵')
+      setError(e instanceof ApiError ? e.message : 'Irgendwas ist schiefgelaufen')
     } finally {
       setLoading(false)
     }
@@ -101,7 +102,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<RareContent>) {
     <div>
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <span className="tag">Frage {state.q + 1}/{n}</span>
-        <span className="score-pill">⭐ {total}</span>
+        <span className="score-pill"><Icon name="star" /> {total}</span>
       </div>
       <h3 style={{ fontSize: 22, margin: '16px 0 10px' }}>{question}</h3>
 
@@ -111,7 +112,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<RareContent>) {
           {a.valid ? (
             <b>{rarityLabel(a.rarity)} (+{a.rarity * 10})</b>
           ) : (
-            <b>❌ zählt nicht</b>
+            <b><Icon name="x" /> zählt nicht</b>
           )}
           <br />
           <span className="muted">{a.comment}</span>
@@ -139,7 +140,7 @@ function Inner({ day, content, solved, onSolved }: GameProps<RareContent>) {
       {error && <p style={{ color: 'var(--red)', fontWeight: 600 }}>{error}</p>}
       {decided && (
         <div className="center" style={{ marginTop: 10 }}>
-          <button className="btn green" onClick={next}>{state.q + 1 >= n ? 'Endstand 🏁' : 'Nächste Frage →'}</button>
+          <button className="btn green" onClick={next}>{state.q + 1 >= n ? 'Endstand' : 'Nächste Frage →'}</button>
         </div>
       )}
     </div>
