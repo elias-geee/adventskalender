@@ -186,8 +186,10 @@ input.text:focus, textarea.text:focus { box-shadow: 0 0 0 3px var(--gold); }
 .wordle-row.checking .tile { animation: wd-checking .8s ease-in-out infinite alternate; }
 @keyframes wd-checking { from { opacity: 1; } to { opacity: .45; } }
 .tile {
-  width: min(13vw, 54px); height: min(13vw, 54px); border: var(--outline); border-radius: 8px; background: var(--white);
-  display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: min(8vw, 32px);
+  /* Grösse passt sich der Wortlänge an (--tiles wird im Wordle gesetzt), damit auch lange Wörter aufs Handy passen */
+  --size: min(13vw, 54px, calc((100vw - 96px) / var(--tiles, 5) - 6px));
+  width: var(--size); height: var(--size); border: var(--outline); border-radius: 8px; background: var(--white);
+  display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: calc(var(--size) * .6);
   text-transform: uppercase; box-shadow: var(--shadow-sm);
 }
 .tile.filled { animation: tilepop .1s; }

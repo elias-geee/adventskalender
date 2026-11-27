@@ -13,15 +13,38 @@ type SongResult = { stage: number; correct: boolean; guesses: string[] }
 type State = { idx: number; stage: number; guesses: string[]; results: SongResult[] }
 type Resolved = { url: string; artwork?: string }
 
-/** Holt die 30-s-Vorschau über den Worker (falls konfiguriert), sonst direkt bei iTunes. */
+type ItunesHit = { trackName?: string; artistName?: string; previewUrl?: string; artworkUrl100?: string }
+const simple = (s = '') => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '')
+
+/** Aus mehreren iTunes-Treffern den richtigen wählen (Interpret + Titel müssen passen). */
+function pick(results: ItunesHit[], song: Song): ItunesHit | undefined {
+  const withPreview = results.filter((r) => r.previewUrl)
+  const artist = simple(song.artist), title = simple(song.title)
+  const artistOk = (r: ItunesHit) => simple(r.artistName).includes(artist) || artist.includes(simple(r.artistName))
+  const titleOk = (r: ItunesHit) => simple(r.trackName).includes(title) || title.includes(simple(r.trackName))
+  return withPreview.find((r) => artistOk(r) && titleOk(r)) ?? withPreview.find(artistOk) ?? withPreview[0]
+}
+
+/** iTunes direkt aus dem Browser fragen (eigene IP → kein Rate-Limit wie bei Cloudflare) */
+async function fromItunes(term: string, song: Song): Promise<Resolved> {
+  const r = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=15&country=CH&term=${encodeURIComponent(term)}`)
+  const j = (await r.json()) as { results?: ItunesHit[] }
+  const hit = pick(j.results ?? [], song)
+  if (!hit?.previewUrl) throw new Error('not found')
+  return { url: hit.previewUrl, artwork: hit.artworkUrl100?.replace('100x100', '400x400') }
+}
+
+/** Holt die 30-s-Vorschau: zuerst direkt bei iTunes, bei Problemen über den Worker (der Treffer cacht). */
 async function resolve(song: Song): Promise<Resolved> {
   if (song.src) return { url: song.src }
   const term = song.search ?? `${song.artist} ${song.title}`
-  if (apiConfigured()) return api<Resolved>(`/song?term=${encodeURIComponent(term)}`)
-  const r = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=1&term=${encodeURIComponent(term)}`)
-  const j = (await r.json()) as { results: { previewUrl: string; artworkUrl100?: string }[] }
-  if (!j.results?.[0]) throw new Error('not found')
-  return { url: j.results[0].previewUrl, artwork: j.results[0].artworkUrl100?.replace('100x100', '400x400') }
+  try {
+    return await fromItunes(term, song)
+  } catch (e) {
+    if (!apiConfigured()) throw e
+    const q = new URLSearchParams({ term, artist: song.artist, title: song.title })
+    return api<Resolved>(`/song?${q}`)
+  }
 }
 
 export default function SongGuess({ day, content, solved, onSolved }: GameProps<SongContent>) {

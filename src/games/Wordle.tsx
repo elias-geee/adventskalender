@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import type { WordleContent } from '../content/types'
 import type { GameProps } from '../components/DayPage'
 import { getProgress, useGameState } from '../lib/progress'
@@ -153,7 +154,7 @@ export default function Wordle({ day, content, solved, onSolved }: GameProps<Wor
 
   return (
     <div>
-      <div className="wordle-board">
+      <div className="wordle-board" style={{ '--tiles': len } as CSSProperties}>
         {rows.map((row, r) => (
           <div
             key={r}

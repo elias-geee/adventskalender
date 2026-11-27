@@ -18,9 +18,9 @@ export const DAYS: Day[] = [
     day: 1,
     title: 'Warm-up Wordle',
     emoji: '🔤',
-    intro: 'Tag 1, let’s goooo 🎄 Heute auf Englisch 🇬🇧 Errate das englische Wort mit 5 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
+    intro: 'Tag 1, let’s goooo 🎄 Heute auf Englisch 🇬🇧 Errate das englische Wort mit 6 Buchstaben in 6 Versuchen. Grün = richtig, Gelb = falsche Stelle.',
     reward: 'Slay! Erstes Türchen geschafft 💅 Nur noch 23 Mal schlafen.',
-    content: { type: 'wordle', word: 'HONEY', lang: 'en' },
+    content: { type: 'wordle', word: 'PETITE', lang: 'en' },
   },
   {
     day: 2,
@@ -52,9 +52,9 @@ export const DAYS: Day[] = [
     content: {
       type: 'song',
       songs: [
-        { search: 'Wham! Last Christmas', title: 'Last Christmas', artist: 'Wham!' },
-        { search: 'Mariah Carey All I Want for Christmas Is You', title: 'All I Want for Christmas Is You', artist: 'Mariah Carey', alt: ['all i want for christmas'] },
-        { search: 'Brenda Lee Rockin Around the Christmas Tree', title: "Rockin' Around the Christmas Tree", artist: 'Brenda Lee', alt: ['rocking around the christmas tree'] },
+        { search: 'Jason Derulo The Other Side', title: 'The Other Side', artist: 'Jason Derulo', alt: ['other side'] },
+        { search: 'Alex Warren RESCUER', title: 'RESCUER', artist: 'Alex Warren' },
+        { search: 'Oasis Wonderwall', title: 'Wonderwall', artist: 'Oasis' },
       ],
     },
   },
@@ -181,7 +181,8 @@ export const DAYS: Day[] = [
     day: 12,
     title: 'Wordle 2.0',
     emoji: '🔠',
-    content: { type: 'wordle', word: 'GLÜHWEIN', maxTries: 7, lang: 'de' },
+    intro: 'Wieder auf Englisch 🇬🇧 Diesmal ein langes Wort: 9 Buchstaben, 7 Versuche. Good luck 🍀',
+    content: { type: 'wordle', word: 'HONEYMOON', maxTries: 7, lang: 'en' },
   },
   {
     day: 13,
@@ -222,8 +223,9 @@ export const DAYS: Day[] = [
     content: {
       type: 'song',
       songs: [
-        { search: 'Jose Feliciano Feliz Navidad', title: 'Feliz Navidad', artist: 'José Feliciano' },
-        { search: 'Bobby Helms Jingle Bell Rock', title: 'Jingle Bell Rock', artist: 'Bobby Helms' },
+        { search: 'The Rembrandts I will Be There For You', title: 'I’ll Be There For You', artist: 'The Rembrandts', alt: ['ill be there for you', 'i will be there for you', 'friends theme', 'friends'] },
+        { search: 'Temper City Self Aware', title: 'Self Aware', artist: 'Temper City', alt: ['selfaware'] },
+        { search: 'Wir sind Helden Von hier an blind', title: 'Von hier an blind', artist: 'Wir sind Helden' },
       ],
     },
   },

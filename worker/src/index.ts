@@ -234,13 +234,34 @@ async function sentence(body: Record<string, unknown>, env: Env) {
   return { score: Math.min(10, Math.max(1, r.score)), comment: r.comment }
 }
 
-async function song(url: URL) {
+async function song(url: URL, env: Env) {
   const term = str(url.searchParams.get('term'), 'term', 200)
-  const r = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=1&country=CH&term=${encodeURIComponent(term)}`)
-  const j = (await r.json()) as { results?: { previewUrl?: string; artworkUrl100?: string }[] }
-  const hit = j.results?.[0]
+  // Treffer werden dauerhaft gecacht: iTunes drosselt Anfragen von Cloudflare-IPs stark
+  const artist = normalize(url.searchParams.get('artist') ?? '').replace(/ /g, '')
+  const title = normalize(url.searchParams.get('title') ?? '').replace(/ /g, '')
+  const key = `song:v2:${normalize(term)}:${artist}:${title}`
+  const cached = await env.CONTEXTO_CACHE.get(key)
+  if (cached) return JSON.parse(cached) as { url: string; artwork?: string }
+  const r = await fetch(`https://itunes.apple.com/search?media=music&entity=song&limit=15&country=CH&term=${encodeURIComponent(term)}`)
+  const text = await r.text()
+  type Hit = { trackName?: string; artistName?: string; previewUrl?: string; artworkUrl100?: string }
+  let j: { results?: Hit[] }
+  try {
+    j = JSON.parse(text)
+  } catch {
+    console.error('iTunes', r.status, text.slice(0, 80))
+    throw new HttpError(503, 'Der Song-Server ist gerade überlastet 🥵 Gleich nochmal versuchen.')
+  }
+  // Den Treffer wählen, bei dem Interpret und Titel passen
+  const simple = (s?: string) => normalize(s ?? '').replace(/ /g, '')
+  const hits = (j.results ?? []).filter((h) => h.previewUrl)
+  const artistOk = (h: Hit) => !artist || simple(h.artistName).includes(artist) || artist.includes(simple(h.artistName))
+  const titleOk = (h: Hit) => !title || simple(h.trackName).includes(title) || title.includes(simple(h.trackName))
+  const hit = hits.find((h) => artistOk(h) && titleOk(h)) ?? hits.find(artistOk) ?? hits[0]
   if (!hit?.previewUrl) throw new HttpError(404, 'Song nicht gefunden')
-  return { url: hit.previewUrl, artwork: hit.artworkUrl100?.replace('100x100', '400x400') }
+  const res = { url: hit.previewUrl, artwork: hit.artworkUrl100?.replace('100x100', '400x400') }
+  await env.CONTEXTO_CACHE.put(key, JSON.stringify(res))
+  return res
 }
 
 // ---------------------------------------------------------------- Router
@@ -255,7 +276,7 @@ export default {
 
     try {
       rateLimit(req.headers.get('CF-Connecting-IP') ?? 'unknown')
-      if (req.method === 'GET' && url.pathname === '/song') return json(await song(url))
+      if (req.method === 'GET' && url.pathname === '/song') return json(await song(url, env))
       if (req.method === 'GET' && url.pathname === '/') return json({ ok: true, hello: '🎄' })
       if (req.method !== 'POST') throw new HttpError(405, 'Method not allowed')
 
