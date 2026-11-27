@@ -12,6 +12,7 @@ import RareAnswers from '../games/RareAnswers'
 import Contexto from '../games/Contexto'
 import TwentyQuestions from '../games/TwentyQuestions'
 import FinishSentence from '../games/FinishSentence'
+import Wimmelbild from '../games/Wimmelbild'
 import SongGuess from '../games/SongGuess'
 import GeoGuess from '../games/GeoGuess'
 import HistoryGuess from '../games/HistoryGuess'
@@ -39,6 +40,7 @@ function renderGame(day: number, c: DayContent, solved: boolean, onSolved: (s: n
     case 'song': return <SongGuess {...p} content={c} />
     case 'geo': return <GeoGuess {...p} content={c} />
     case 'history': return <HistoryGuess {...p} content={c} />
+    case 'wimmel': return <Wimmelbild {...p} content={c} />
   }
 }
 

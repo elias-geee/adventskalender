@@ -12,7 +12,7 @@ Comic-/Gen-Z-Adventskalender mit 24 Türchen: Hörspiele und Mini-Games. Jedes T
 | Fotos für Geo-/History-Guessr | `public/img/` → z. B. `img: 'img/zermatt.jpg'` |
 | 🔒 Geheime Lösungen (Contexto-Wörter, „Wer bin ich“-Personen) | `worker/src/puzzles.ts` (nicht im Repo!) |
 
-Spieltypen: `audio`, `wordle`, `crossword`, `minesweeper`, `rare` (seltenste Antwort gewinnt), `contexto`, `twenty` (Wer bin ich?), `sentence` (Satz beenden), `song`, `geo`, `history`. Alle Felder sind in `src/content/types.ts` dokumentiert.
+Spieltypen: `audio`, `wordle`, `crossword`, `minesweeper`, `rare` (seltenste Antwort gewinnt), `contexto`, `twenty` (Wer bin ich?), `sentence` (Satz beenden), `song`, `geo`, `history`, `wimmel` (Wimmelbild: Figuren antippen, Positionen relativ 0–1). Alle Felder sind in `src/content/types.ts` dokumentiert.
 
 **Tipps:**
 - Fotos vorher verkleinern (z. B. max. 1600 px breit), damit sie am Handy schnell laden.

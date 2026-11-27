@@ -238,6 +238,7 @@ export const TYPE_ICON: Record<string, IconName> = {
   song: 'music',
   geo: 'pin',
   history: 'hourglass',
+  wimmel: 'search',
 }
 
 /** SVG-Markup als String (für Leaflet-Marker, die HTML statt React brauchen) */

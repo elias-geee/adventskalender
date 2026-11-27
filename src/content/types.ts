@@ -89,6 +89,29 @@ export type SongContent = {
   songs: Song[]
 }
 
+export type WimmelTarget = {
+  /** Name der Figur (erscheint in der Legende) */
+  name: string
+  /** Position im Bild, relativ (0–1) von links bzw. oben */
+  x: number
+  y: number
+  /** Trefferradius relativ zur Bildbreite (Standard 0.03) */
+  r?: number
+  /** kleines Referenzbild (z. B. 'img/wimmel-fiona.png') – sonst wird ein Farbfeld gezeigt */
+  img?: string
+  /** kurze Beschreibung, woran man die Figur erkennt */
+  hint?: string
+  /** Farbe für Markierung und Legende */
+  color?: string
+  /** zweite Streifenfarbe im Farbfeld der Legende (Standard weiss) */
+  color2?: string
+}
+export type WimmelContent = {
+  type: 'wimmel'
+  img: string
+  targets: WimmelTarget[]
+}
+
 export type GeoRound = {
   img: string
   lat: number
@@ -131,6 +154,7 @@ export type DayContent =
   | ContextoContent
   | TwentyContent
   | SentenceContent
+  | WimmelContent
   | SongContent
   | GeoContent
   | HistoryContent

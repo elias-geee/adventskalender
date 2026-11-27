@@ -352,3 +352,40 @@ input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
 .player .cover { display: flex; align-items: center; justify-content: center; }
 .snow span .icon { vertical-align: 0; }
 .footer .icon { width: 1.1em; height: 1.1em; }
+
+/* ---------- Wimmelbild ---------- */
+.wm-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (min-width: 640px) { .wm-legend { grid-template-columns: repeat(3, 1fr); } }
+.wm-chip {
+  position: relative; display: flex; align-items: center; gap: 8px; background: var(--white); border: 2.5px solid var(--ink);
+  border-left: 8px solid var(--c); border-radius: 10px; padding: 6px 8px; box-shadow: var(--shadow-sm); min-height: 58px; line-height: 1.2;
+}
+.wm-chip img { height: 52px; width: 26px; object-fit: contain; flex-shrink: 0; }
+.wm-chip small { display: block; font-size: 11.5px; color: #555; }
+.wm-chip.found { opacity: .55; }
+.wm-chip.found b { text-decoration: line-through; }
+.wm-chip .wm-check { position: absolute; top: -8px; right: -6px; width: 26px; height: 26px; padding: 3px; background: var(--green); color: var(--white); border: 2px solid var(--ink); border-radius: 50%; stroke-width: 3; }
+.wm-swatch {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink); flex-shrink: 0;
+  background: repeating-linear-gradient(180deg, var(--c) 0 4px, var(--c2, var(--white)) 4px 8px);
+}
+.wm-view {
+  height: min(68vh, 620px); overflow: auto; border: var(--outline); border-radius: var(--radius); box-shadow: var(--shadow);
+  background: var(--cream); touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; overscroll-behavior: contain;
+}
+.wm-view:active { cursor: grabbing; }
+.wm-canvas { position: relative; cursor: crosshair; }
+.wm-canvas img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.wm-mark {
+  position: absolute; transform: translate(-50%, -50%); border: 3px solid var(--c); border-radius: 50%; pointer-events: none;
+  box-shadow: 0 0 0 2px var(--white), inset 0 0 0 2px var(--white); animation: wm-pop .35s ease-out;
+}
+.wm-mark.revealed { border-style: dashed; }
+.wm-mark span {
+  position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, -2px); background: var(--white); color: var(--ink);
+  border: 2px solid var(--c); border-radius: 6px; padding: 0 6px; font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.wm-miss { position: absolute; transform: translate(-50%, -50%); color: var(--red); pointer-events: none; animation: wm-fade .7s ease-out forwards; }
+.wm-miss .icon { width: 22px; height: 22px; stroke-width: 3.5; filter: drop-shadow(0 0 2px #fff); }
+@keyframes wm-pop { from { transform: translate(-50%, -50%) scale(1.8); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+@keyframes wm-fade { from { opacity: 1; } to { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }

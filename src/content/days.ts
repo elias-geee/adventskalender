@@ -4,7 +4,7 @@ import type { Day } from './types'
  * HIER befüllst du den Kalender
  *
  * Jeder Tag hat einen `content.type`:
- *   audio · wordle · crossword · minesweeper · rare · contexto · twenty · sentence · song · geo · history
+ *   audio · wordle · crossword · minesweeper · rare · contexto · twenty · sentence · song · geo · history · wimmel
  *
  * Alles hier drin ist öffentlich (GitHub Pages). Geheime Lösungen für Contexto und
  * 20 Fragen stehen deshalb im Worker (worker/src/puzzles.ts).
@@ -133,14 +133,18 @@ export const DAYS: Day[] = [
   },
   {
     day: 8,
-    title: 'Satz beenden',
-    intro: 'Beende die Sätze so kreativ wie möglich. Die KI-Jury bewertet (sie ist streng, aber fair).',
+    title: 'Wimmelbild: Skipiste',
+    intro: 'Wimmelbild! Finde alle sechs: Waldo und seine Freunde – und zwei Gäste, die sich heimlich ins Bild geschlichen haben. Tipp auf eine Figur, sobald du sie entdeckt hast. Jeder Fehlklick kostet ein paar Punkte.',
     content: {
-      type: 'sentence',
-      prompts: [
-        { start: 'Das Wichtigste an Weihnachten ist eigentlich ...', mine: 'Platzhalter: deine Antwort' },
-        { start: 'Wenn der Samichlaus wüsste, was ich dieses Jahr gemacht habe, würde er ...' },
-        { start: 'Mein perfekter Wintertag beginnt mit ...' },
+      type: 'wimmel',
+      img: 'img/wimmel-1.webp',
+      targets: [
+        { name: 'Waldo', x: 0.8520, y: 0.7414, r: 0.028, color: '#d7263d', hint: 'Rot-weiss geringelter Pulli, Bommelmütze, runde Brille' },
+        { name: 'Wenda', x: 0.4876, y: 0.4437, r: 0.028, color: '#ff6fb5', color2: '#d7263d', hint: 'Rot-weiss geringelt, Brille, blauer Rock' },
+        { name: 'Odlaw', x: 0.3178, y: 0.6506, r: 0.028, color: '#e0a800', color2: '#141414', hint: 'Gelb-schwarz geringelt, Schnauz, dunkle Brille' },
+        { name: 'Zauberer Weissbart', x: 0.0722, y: 0.7621, r: 0.028, color: '#3a86ff', color2: '#d7263d', hint: 'Langer weisser Bart, rote Robe, Spitzhut' },
+        { name: 'Fiona', x: 0.3214, y: 0.7920, r: 0.028, color: '#8338ec', img: 'img/wimmel-fiona.png', hint: 'Kommt dir bekannt vor?' },
+        { name: 'Elias', x: 0.5226, y: 0.5149, r: 0.028, color: '#1b998b', img: 'img/wimmel-elias.png', hint: 'Winkt mit dem Handy' },
       ],
     },
   },
@@ -312,10 +316,19 @@ export const DAYS: Day[] = [
   },
   {
     day: 23,
-    title: 'Satz beenden 2',
+    title: 'Wimmelbild: Mondstation',
+    intro: 'Zweite Runde, diesmal auf dem Mond. Wieder sind sechs Figuren versteckt – viel Spass beim Suchen!',
     content: {
-      type: 'sentence',
-      prompts: [{ start: 'Nächstes Jahr an Weihnachten will ich unbedingt ...' }, { start: 'Das Beste an uns zwei ist ...' }],
+      type: 'wimmel',
+      img: 'img/wimmel-2.webp',
+      targets: [
+        { name: 'Waldo', x: 0.4041, y: 0.6429, r: 0.028, color: '#d7263d', hint: 'Rot-weiss geringelter Pulli, Bommelmütze, runde Brille' },
+        { name: 'Wenda', x: 0.2961, y: 0.5379, r: 0.028, color: '#ff6fb5', color2: '#d7263d', hint: 'Rot-weiss geringelt, Brille, blauer Rock' },
+        { name: 'Odlaw', x: 0.0735, y: 0.6964, r: 0.028, color: '#e0a800', color2: '#141414', hint: 'Gelb-schwarz geringelt, Schnauz, dunkle Brille' },
+        { name: 'Zauberer Weissbart', x: 0.7781, y: 0.5882, r: 0.028, color: '#3a86ff', color2: '#d7263d', hint: 'Langer weisser Bart, rote Robe, Spitzhut' },
+        { name: 'Fiona', x: 0.1477, y: 0.9554, r: 0.028, color: '#8338ec', img: 'img/wimmel-fiona.png', hint: 'Kommt dir bekannt vor?' },
+        { name: 'Elias', x: 0.7142, y: 0.9609, r: 0.028, color: '#1b998b', img: 'img/wimmel-elias.png', hint: 'Winkt mit dem Handy' },
+      ],
     },
   },
   {
