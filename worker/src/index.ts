@@ -191,11 +191,16 @@ async function twenty(body: Record<string, unknown>, env: Env) {
     env,
     `Ihr spielt «Wer bin ich?». Du denkst an: ${p.name}.` +
       (p.facts ? `\nFakten zu dieser Person (nutze sie als Wahrheit): ${p.facts}` : '') +
-      '\nBeantworte die Ja/Nein-Frage der Spielerin wahrheitsgemäss mit answer = "Ja", "Nein", "Teilweise" (wenn es nur zum Teil stimmt) oder "Unklar" (wenn man es nicht sicher weiss oder die Frage keine Ja/Nein-Frage ist). ' +
+      '\nBeantworte die Ja/Nein-Frage der Spielerin so, wie ein guter Kenner dieser Person bzw. Figur spontan antworten würde. ' +
+      'Regeln: (1) Bevorzuge klare Antworten: "Ja" oder "Nein". Ein Detail, eine Ausnahme oder «es kam erst später so» ist KEIN Grund für "Teilweise" – entscheide nach dem, was überwiegend bzw. im Grossen und Ganzen stimmt. ' +
+      '(2) "Teilweise" nur, wenn eine glatte Ja- oder Nein-Antwort die Spielerin klar in die Irre führen würde (z. B. die Frage fragt zwei Dinge, von denen nur eins stimmt). ' +
+      '(3) "Unklar" nur, wenn es dazu wirklich keine Information gibt oder die Frage keine Ja/Nein-Frage ist. ' +
+      '(4) Bei fiktiven Figuren gilt die Welt der Serie/des Films als Wahrheit (z. B. «Lebt sie?» → Ja, «Singt sie?» → nach dem, was sie in der Serie tut). Nur Fragen wie «Ist es eine echte/reale Person?» werden mit Nein beantwortet. ' +
+      'Schreib zuerst in reason ganz kurz deine Überlegung, dann die Antwort. ' +
       `solved = true nur, wenn die Spielerin die Person eindeutig richtig benennt (z. B. «Ist es ${p.name}?»; Tippfehler sind ok).`,
     `Bisheriger Verlauf:\n${transcript || '–'}\n\nNeue Frage: <eingabe>${question}</eingabe>`,
-    z.object({ answer: z.enum(['Ja', 'Nein', 'Teilweise', 'Unklar']), solved: z.boolean() }),
-    300,
+    z.object({ reason: z.string(), answer: z.enum(['Ja', 'Nein', 'Teilweise', 'Unklar']), solved: z.boolean() }),
+    500,
     false,
   )
   // Zusätzliche Absicherung: exakter Namens-Treffer zählt immer
