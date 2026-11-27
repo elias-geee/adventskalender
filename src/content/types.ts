@@ -130,7 +130,7 @@ export type GeoContent = {
 
 export type HistoryRound = {
   img: string
-  /** "YYYY" oder "YYYY-MM" */
+  /** "YYYY", "YYYY-MM" oder "YYYY-MM-DD" (der Tag wird nur bei der Auflösung angezeigt) */
   date: string
   caption?: string
   /** wird nach dem Raten angezeigt */
@@ -143,6 +143,8 @@ export type HistoryContent = {
   from: string
   to: string
   precision: 'year' | 'month'
+  /** Abweichung (in Jahren bzw. Monaten), bei der es noch ~37 % der Punkte gibt. Standard: 3 Jahre bzw. 4 Monate */
+  tolerance?: number
 }
 
 export type DayContent =

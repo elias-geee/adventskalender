@@ -194,15 +194,23 @@ export const DAYS: Day[] = [
   {
     day: 14,
     title: 'History-Guessr',
-    intro: 'Wann wurde dieses Foto gemacht? Schieb den Regler!',
+    intro: 'Wann wurde dieses Foto gemacht? Schieb den Regler auf Monat und Jahr – mit − und + kannst du fein einstellen. Je näher du dran bist, desto mehr Punkte.',
     content: {
       type: 'history',
       precision: 'month',
-      from: '2022-01',
+      from: '2005-01',
       to: '2026-12',
+      tolerance: 10,
+      // bewusst gemischt (nicht chronologisch)
       rounds: [
-        { img: 'img/placeholder-1.svg', date: '2024-07', caption: 'Platzhalter', story: 'Hier könnte eine kleine Erinnerung stehen.' },
-        { img: 'img/placeholder-2.svg', date: '2025-02' },
+        { img: 'img/hist-1.jpg', date: '2020-07-02' },
+        { img: 'img/hist-2.jpg', date: '2005-09-08' },
+        { img: 'img/hist-3.jpg', date: '2025-09-01' },
+        { img: 'img/hist-4.jpg', date: '2019-04-25' },
+        { img: 'img/hist-5.jpg', date: '2026-08-23' },
+        { img: 'img/hist-6.jpg', date: '2018-08-28' },
+        { img: 'img/hist-7.jpg', date: '2023-03-06' },
+        { img: 'img/hist-8.jpg', date: '2020-06-27' },
       ],
     },
   },

@@ -18,6 +18,12 @@ function toIndex(s: string, precision: 'year' | 'month') {
 function label(i: number, precision: 'year' | 'month') {
   return precision === 'year' ? String(i) : `${MONTHS[i % 12]} ${Math.floor(i / 12)}`
 }
+/** Lösung anzeigen – mit Tag, falls angegeben (z. B. "8. Sept 2005") */
+function fullDate(s: string, precision: 'year' | 'month') {
+  const [y, m, d] = s.split('-').map(Number)
+  if (d && m) return `${d}. ${MONTHS[m - 1]} ${y}`
+  return label(toIndex(s, precision), precision)
+}
 
 export default function HistoryGuess({ day, content, solved, onSolved }: GameProps<HistoryContent>) {
   const { precision } = content
@@ -26,7 +32,7 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
   const [state, setState] = useGameState<State>(day, { round: 0, guesses: [] })
   const [value, setValue] = useState(Math.round((min + max) / 2))
   // Toleranz: Jahre → 3 Jahre, Monate → 4 Monate für ~37 % Punkte
-  const tol = precision === 'year' ? 3 : 4
+  const tol = content.tolerance ?? (precision === 'year' ? 3 : 4)
 
   const total = state.guesses.reduce((s, g) => s + g.points, 0)
   const finished = state.round >= content.rounds.length
@@ -87,7 +93,7 @@ export default function HistoryGuess({ day, content, solved, onSolved }: GamePro
         {guessed ? (
           <>
             <p style={{ fontSize: 18, fontWeight: 600 }}>
-              Richtig wäre: <b>{label(truth, precision)}</b> → {guessed.points} Punkte
+              Richtig wäre: <b>{fullDate(round.date, precision)}</b> → {guessed.points} Punkte
             </p>
             {round.story && <div className="bubble">{round.story}</div>}
             <button className="btn green" onClick={() => { setState({ ...state, round: state.round + 1 }); setValue(Math.round((min + max) / 2)) }}>
