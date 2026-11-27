@@ -19,8 +19,8 @@ export default function Wimmelbild({ day, content, solved, onSolved }: GameProps
   const [baseW, setBaseW] = useState(0) // Breite des Sichtfensters
   const [zoom, setZoom] = useState(1)
   const [naturalW, setNaturalW] = useState(1400)
-  // bis zur doppelten Originalauflösung zoomen (mind. 3×)
-  const maxZoom = baseW ? Math.max(3, (naturalW * 2) / baseW) : 3
+  // bis etwas über die Originalgrösse zoomen (mind. 3×) – mehr bringt keine zusätzlichen Details
+  const maxZoom = baseW ? Math.max(3, (naturalW * 1.2) / baseW) : 3
   const [misses, setMisses] = useState<Miss[]>([])
   const pendingScroll = useRef<{ fx: number; fy: number; px: number; py: number } | null>(null)
   const drag = useRef<{ x: number; y: number; sl: number; st: number; moved: boolean } | null>(null)
