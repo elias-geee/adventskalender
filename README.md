@@ -11,6 +11,7 @@ Comic-/Gen-Z-Adventskalender mit 24 Türchen: Hörspiele und Mini-Games. Jedes T
 | Hörspiele (`.mp3`/`.m4a`) | `public/audio/` → z. B. `src: 'audio/day06.mp3'` |
 | Fotos für Geo-/History-Guessr | `public/img/` → z. B. `img: 'img/zermatt.jpg'` |
 | 🔒 Geheime Lösungen (Contexto-Wörter, „Wer bin ich“-Personen) | `worker/src/puzzles.ts` (nicht im Repo!) |
+| 🔒 Private Fotos (z. B. History-Guessr) | `private/img/` (nicht im Repo!) → hochladen mit `cd worker && ./upload-private-images.sh`, im Kalender per `privateImg('name.jpg')` einbinden |
 
 Spieltypen: `audio`, `wordle`, `crossword`, `minesweeper`, `rare` (seltenste Antwort gewinnt), `contexto`, `twenty` (Wer bin ich?), `sentence` (Satz beenden), `song`, `geo`, `history`, `wimmel` (Wimmelbild: Figuren antippen, Positionen relativ 0–1). Alle Felder sind in `src/content/types.ts` dokumentiert.
 

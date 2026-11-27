@@ -296,6 +296,17 @@ async function song(url: URL, env: Env) {
   return res
 }
 
+const IMAGE_TYPES: Record<string, string> = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
+async function image(name: string, env: Env): Promise<Response> {
+  const ext = name.split('.').pop()?.toLowerCase() ?? ''
+  if (!/^[a-z0-9-]+\.[a-z]+$/.test(name) || !IMAGE_TYPES[ext]) return new Response('Not found', { status: 404 })
+  const data = await env.CONTEXTO_CACHE.get(`img:${name}`, 'arrayBuffer')
+  if (!data) return new Response('Not found', { status: 404 })
+  return new Response(data, {
+    headers: { 'Content-Type': IMAGE_TYPES[ext], 'Cache-Control': 'public, max-age=604800', 'X-Robots-Tag': 'noindex' },
+  })
+}
+
 // ---------------------------------------------------------------- Router
 
 export default {
@@ -305,6 +316,9 @@ export default {
     const url = new URL(req.url)
     const json = (data: unknown, status = 200) =>
       new Response(JSON.stringify(data), { status, headers: { ...cors, 'Content-Type': 'application/json' } })
+
+    // Private Fotos (nicht im öffentlichen GitHub-Repo): liegen im KV-Speicher unter "img:<name>"
+    if (req.method === 'GET' && url.pathname.startsWith('/img/')) return image(url.pathname.slice(5), env)
 
     try {
       rateLimit(req.headers.get('CF-Connecting-IP') ?? 'unknown')

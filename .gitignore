@@ -28,3 +28,7 @@ worker/src/puzzles.ts
 worker/.dev.vars
 worker/.wrangler
 .env
+
+# Private Fotos: werden über den Worker (Cloudflare KV) ausgeliefert, NIE ins Repo
+private/
+public/img/hist-*

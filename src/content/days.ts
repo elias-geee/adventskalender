@@ -1,4 +1,5 @@
 import type { Day } from './types'
+import { privateImg } from '../config'
 
 /*
  * HIER befüllst du den Kalender
@@ -203,14 +204,14 @@ export const DAYS: Day[] = [
       tolerance: 10,
       // bewusst gemischt (nicht chronologisch)
       rounds: [
-        { img: 'img/hist-1.jpg', date: '2020-07-02' },
-        { img: 'img/hist-2.jpg', date: '2005-09-08' },
-        { img: 'img/hist-3.jpg', date: '2025-09-01' },
-        { img: 'img/hist-4.jpg', date: '2019-04-25' },
-        { img: 'img/hist-5.jpg', date: '2026-08-23' },
-        { img: 'img/hist-6.jpg', date: '2018-08-28' },
-        { img: 'img/hist-7.jpg', date: '2023-03-06' },
-        { img: 'img/hist-8.jpg', date: '2020-06-27' },
+        { img: privateImg('hist-1.jpg'), date: '2020-07-02' },
+        { img: privateImg('hist-2.jpg'), date: '2005-09-08' },
+        { img: privateImg('hist-3.jpg'), date: '2025-09-01' },
+        { img: privateImg('hist-4.jpg'), date: '2019-04-25' },
+        { img: privateImg('hist-5.jpg'), date: '2026-08-23' },
+        { img: privateImg('hist-6.jpg'), date: '2018-08-28' },
+        { img: privateImg('hist-7.jpg'), date: '2023-03-06' },
+        { img: privateImg('hist-8.jpg'), date: '2020-06-27' },
       ],
     },
   },
