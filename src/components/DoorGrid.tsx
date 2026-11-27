@@ -85,7 +85,6 @@ export default function DoorGrid() {
         })}
       </div>
 
-      <p className="footer">mit <Icon name="heart" /> gemacht – und viel zu viel Kaffee</p>
       {toast}
     </div>
   )

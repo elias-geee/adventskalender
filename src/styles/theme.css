@@ -323,7 +323,6 @@ input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
 .spin { display: inline-flex; animation: spin 1.6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.footer { text-align: center; color: var(--white); font-weight: 600; text-shadow: 1px 1px 0 var(--ink); margin-top: 30px; }
 
 /* ---------- Icons (eigenes Set statt Emojis) ---------- */
 .icon { display: inline-block; vertical-align: -0.2em; flex-shrink: 0; overflow: visible; }
@@ -351,7 +350,6 @@ input[type=range].seek { width: 100%; accent-color: var(--red); height: 24px; }
 .play-btn .icon { stroke: var(--white); }
 .player .cover { display: flex; align-items: center; justify-content: center; }
 .snow span .icon { vertical-align: 0; }
-.footer .icon { width: 1.1em; height: 1.1em; }
 
 /* ---------- Wimmelbild ---------- */
 .wm-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }

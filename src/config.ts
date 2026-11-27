@@ -4,7 +4,7 @@
 export const YEAR = 2026
 
 /** Name, der im Kalender angezeigt wird. */
-export const HER_NAME = 'Schatz'
+export const HER_NAME = 'Pupsi'
 
 /** Dein Name (Absender). */
 export const MY_NAME = 'dein Elias'
