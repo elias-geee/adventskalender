@@ -28,6 +28,13 @@ function save() {
   listeners.forEach((l) => l())
 }
 
+/** Löscht den gesamten Spielstand (alle Tage, Punkte, Zwischenstände). */
+export function resetProgress() {
+  cache = {}
+  localStorage.removeItem(KEY)
+  listeners.forEach((l) => l())
+}
+
 export function getProgress(day: number): DayProgress {
   return cache[day] ?? {}
 }

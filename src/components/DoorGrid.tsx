@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { DAYS } from '../content/days'
 import { HER_NAME, YEAR } from '../config'
 import { daysUntil, isUnlocked, todayDay } from '../lib/unlock'
-import { totalScore, updateProgress, useAllProgress } from '../lib/progress'
+import { resetProgress, totalScore, updateProgress, useAllProgress } from '../lib/progress'
 import { useToast } from './Toast'
 import Countdown from './Countdown'
 import Icon, { TYPE_ICON } from './Icon'
@@ -44,12 +44,25 @@ export default function DoorGrid() {
   const refresh = useCallback(() => setTick((t) => t + 1), [])
   const preDecember = today === null && !isUnlocked(1)
 
+  // Versteckter Reset: 4× schnell auf «Dezember 2026» tippen
+  const taps = useRef<number[]>([])
+  const secretTap = () => {
+    const t = Date.now()
+    taps.current = [...taps.current.filter((x) => t - x < 2000), t]
+    if (taps.current.length < 4) return
+    taps.current = []
+    if (confirm('Spielstand zurücksetzen? Alle Punkte und gelösten Türchen auf diesem Gerät werden gelöscht.')) {
+      resetProgress()
+      showToast('Spielstand zurückgesetzt')
+    }
+  }
+
   return (
     <div className="container">
       <header className="hero">
         <h1>Advents&shy;kalender</h1>
         <div className="sub">
-          für {HER_NAME} · Dezember {YEAR}
+          für {HER_NAME} · <span onClick={secretTap}>Dezember {YEAR}</span>
         </div>
         {preDecember && <Countdown onDone={refresh} />}
         {score > 0 && (

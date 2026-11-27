@@ -68,7 +68,7 @@ button, input, select, textarea { font-family: inherit; color: inherit; }
 .hero .sub {
   display: inline-block; margin-top: 14px; padding: 6px 14px;
   background: var(--white); border: var(--outline); border-radius: 999px; box-shadow: var(--shadow-sm);
-  font-weight: 600; transform: rotate(1deg);
+  font-weight: 600; transform: rotate(1deg); user-select: none; -webkit-user-select: none; touch-action: manipulation;
 }
 .countdown { margin-top: 18px; }
 .countdown-title {
